@@ -79,20 +79,6 @@ export function PreArrivalView({ onBack, onNavigate }: PreArrivalViewProps) {
                 ))}
               </div>
             </div>
-
-            <div className="border-t border-ink-700 pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <p className="font-serif text-lg font-light text-ivory-100">Need an airport pickup?</p>
-                <p className="text-xs text-stone-400">Airport pickup can also be arranged for you.</p>
-              </div>
-              <button
-                onClick={() => onNavigate('concierge')}
-                className="no-tap-highlight shrink-0 inline-flex items-center gap-2 rounded-full border border-champagne-400/40 bg-champagne-500/10 px-5 py-2.5 text-xs font-medium uppercase tracking-wider text-champagne-300 transition-colors hover:bg-champagne-500 hover:text-ink-900"
-              >
-                <span>Request Pickup</span>
-                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-              </button>
-            </div>
           </div>
         </Reveal>
 
