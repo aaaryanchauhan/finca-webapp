@@ -51,25 +51,16 @@ export function HomeView({ onNavigate }: HomeViewProps) {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(26,24,22,0.65)_0%,_rgba(26,24,22,0)_75%)] pointer-events-none" />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
-          {property.guestName && (
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-champagne-400/50 bg-ink-900/85 px-6 py-2.5 backdrop-blur-md shadow-2xl gold-border-glow animate-fade-down">
-              <Sparkles className="h-4 w-4 text-champagne-400 animate-pulse shrink-0" />
-              <span className="font-serif text-sm sm:text-base font-light tracking-wide text-ivory-50">
-                Welcome <span className="text-champagne-300 font-semibold">{property.guestName}</span> — Excited to host you
-              </span>
-            </div>
-          )}
-
           <div className="animate-fade-in flex flex-col items-center">
-            <p className="text-xs font-medium uppercase tracking-widest-3 text-champagne-300 drop-shadow-md">
-              Welcome to
+            <p className="text-xs sm:text-sm font-medium uppercase tracking-widest-3 text-champagne-300 drop-shadow-md">
+              {property.guestName ? `Welcome, ${property.guestName}` : 'Welcome to'}
             </p>
           </div>
           <h1 className="animate-fade-up animate-delay-100 mt-3 font-serif text-5xl font-light tracking-tight text-ivory-50 hero-text-shadow drop-shadow-xl sm:text-6xl md:text-7xl">
             {property.name}
           </h1>
           <p className="animate-fade-up animate-delay-200 mt-4 max-w-md px-4 font-serif text-lg font-light italic leading-relaxed text-ivory-100 hero-text-shadow drop-shadow-md sm:text-xl">
-            {property.guestName ? `Welcome ${property.guestName}. ${property.tagline}` : property.tagline}
+            {property.guestName ? `Excited to host you. ${property.tagline}` : property.tagline}
           </p>
 
           <button

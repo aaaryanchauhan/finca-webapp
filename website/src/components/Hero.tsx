@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Play, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
+import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import { villaInfo } from '../data/villaData';
 
 interface HeroProps {
@@ -82,15 +82,9 @@ export function Hero({ onOpenDigitalTour }: HeroProps) {
 
       {/* Hero Central Content */}
       <div className="relative z-20 mx-auto max-w-4xl px-6 text-center mt-12">
-        {/* Dynamic Personalized Guest Welcome Badge */}
-        {guestName && (
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-champagne-400/50 bg-ink-900/85 px-6 py-2.5 backdrop-blur-md shadow-2xl gold-border-glow animate-fade-down">
-            <Sparkles className="h-4 w-4 text-champagne-400 animate-pulse shrink-0" />
-            <span className="font-serif text-sm sm:text-base font-light tracking-wide text-ivory-50">
-              Welcome <span className="text-champagne-300 font-semibold">{guestName}</span> — Excited to host you
-            </span>
-          </div>
-        )}
+        <p className="text-xs sm:text-sm font-medium uppercase tracking-widest-3 text-champagne-300 drop-shadow-md mb-3 animate-fade-down">
+          {guestName ? `Welcome, ${guestName}` : 'Private Luxury Estate'}
+        </p>
 
         <h1 className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight text-ivory-50 hero-text-shadow drop-shadow-2xl animate-fade-up">
           Finca Libia
@@ -98,7 +92,7 @@ export function Hero({ onOpenDigitalTour }: HeroProps) {
 
         <p className="mt-6 max-w-3xl mx-auto font-serif text-xl sm:text-2xl font-light italic leading-relaxed text-ivory-100 hero-text-shadow drop-shadow-md animate-fade-up animate-delay-100">
           {guestName
-            ? `Welcome ${guestName}, excited to host you at Finca Libia. Designed with exquisite attention to detail, this private luxury estate redefines countryside elegance.`
+            ? `Excited to host you at Finca Libia. Designed with exquisite attention to detail, this private sanctuary redefines countryside elegance.`
             : `Escape to Finca Libia, a luxury estate unlike any other. Designed with exquisite attention to detail, this newly built farmhouse redefines countryside elegance.`}
         </p>
 
