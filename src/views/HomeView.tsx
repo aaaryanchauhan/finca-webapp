@@ -83,12 +83,9 @@ export function HomeView({ onNavigate }: HomeViewProps) {
           {/* Highlighted Itinerary Box */}
           <Reveal>
             <div className="relative overflow-hidden rounded-3xl border border-champagne-400/35 bg-gradient-to-br from-ink-800/90 via-ink-800/70 to-champagne-950/25 p-7 sm:p-9 backdrop-blur-md shadow-2xl transition-all duration-300 hover:border-champagne-400/60 gold-border-glow">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-champagne-400">
-                  <Sparkles className="h-4 w-4" strokeWidth={1.5} />
-                  <span className="text-[10px] uppercase tracking-widest-3 font-medium">Daily Itinerary</span>
-                </div>
-                <span className="text-[10px] font-mono text-champagne-400/70 uppercase tracking-widest-2">Bespoke Concierge</span>
+              <div className="flex items-center gap-2 text-champagne-400">
+                <Sparkles className="h-4 w-4" strokeWidth={1.5} />
+                <span className="text-[10px] uppercase tracking-widest-3 font-medium">Daily Itinerary</span>
               </div>
               <h2 className="mt-3 font-serif text-3xl sm:text-4xl font-light text-ivory-50">
                 You have no plans yet.
