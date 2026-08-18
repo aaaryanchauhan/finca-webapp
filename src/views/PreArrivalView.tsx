@@ -48,8 +48,56 @@ export function PreArrivalView({ onBack, onNavigate }: PreArrivalViewProps) {
           </div>
         </Reveal>
 
-        {/* Section 1: Getting Here */}
+        {/* Section: Video & Facility Instructions */}
         <Reveal delay={50}>
+          <div className="rounded-2xl border border-ink-700 bg-ink-800/60 p-6 sm:p-8 backdrop-blur-md space-y-5">
+            <div className="flex items-center gap-3 text-champagne-400">
+              <Video className="h-6 w-6" strokeWidth={1.5} />
+              <h2 className="font-serif text-2xl font-light text-ivory-50">Learn How Everything Works</h2>
+            </div>
+            <p className="text-sm leading-relaxed text-stone-300">
+              We’ve prepared simple video guides to help you use the property’s facilities. You’ll find instructions for things such as:
+            </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-stone-300">
+              {[
+                'Garage doors',
+                'Steam bath',
+                'Tennis court lights',
+                'Music systems',
+                'Fireplaces',
+                'Other property amenities',
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-2 rounded-lg bg-ink-900/60 p-2.5 border border-ink-700/60">
+                  <Check className="h-3.5 w-3.5 text-champagne-400 shrink-0" strokeWidth={2} />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <button
+                onClick={() => onNavigate('guide')}
+                className="no-tap-highlight inline-flex items-center gap-2 rounded-full border border-champagne-400/40 bg-champagne-500/10 px-5 py-2.5 text-xs font-medium uppercase tracking-widest-2 text-champagne-300 transition-colors hover:bg-champagne-500 hover:text-ink-900"
+              >
+                <span>View Instruction Guide</span>
+                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+              </button>
+              <a
+                href={property.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="no-tap-highlight inline-flex items-center gap-2 rounded-full bg-red-600/90 px-5 py-2.5 text-xs font-medium uppercase tracking-widest-2 text-white transition-all hover:bg-red-500"
+              >
+                <Video className="h-4 w-4" strokeWidth={1.5} />
+                <span>Watch on YouTube (@fincalibia)</span>
+              </a>
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Section 1: Getting Here */}
+        <Reveal delay={100}>
           <div className="rounded-2xl border border-ink-700 bg-ink-800/60 p-6 sm:p-8 backdrop-blur-md space-y-6">
             <div className="flex items-center gap-3 text-champagne-400">
               <Plane className="h-6 w-6" strokeWidth={1.5} />
@@ -142,54 +190,6 @@ export function PreArrivalView({ onBack, onNavigate }: PreArrivalViewProps) {
                 <p className="mt-1 font-mono text-base text-ivory-100">{property.wifi.inside.network}</p>
                 <p className="mt-2 text-xs text-stone-400">Password: <span className="font-mono text-champagne-300">{property.wifi.inside.password}</span></p>
               </div>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Section 5: Video & Facility Instructions */}
-        <Reveal delay={250}>
-          <div className="rounded-2xl border border-ink-700 bg-ink-800/60 p-6 sm:p-8 backdrop-blur-md space-y-5">
-            <div className="flex items-center gap-3 text-champagne-400">
-              <Video className="h-6 w-6" strokeWidth={1.5} />
-              <h2 className="font-serif text-2xl font-light text-ivory-50">Learn How Everything Works</h2>
-            </div>
-            <p className="text-sm leading-relaxed text-stone-300">
-              We’ve prepared simple video guides to help you use the property’s facilities. You’ll find instructions for things such as:
-            </p>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-stone-300">
-              {[
-                'Garage doors',
-                'Steam bath',
-                'Tennis court lights',
-                'Music systems',
-                'Fireplaces',
-                'Other property amenities',
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-2 rounded-lg bg-ink-900/60 p-2.5 border border-ink-700/60">
-                  <Check className="h-3.5 w-3.5 text-champagne-400 shrink-0" strokeWidth={2} />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex flex-wrap items-center gap-3 pt-2">
-              <button
-                onClick={() => onNavigate('guide')}
-                className="no-tap-highlight inline-flex items-center gap-2 rounded-full border border-champagne-400/40 bg-champagne-500/10 px-5 py-2.5 text-xs font-medium uppercase tracking-widest-2 text-champagne-300 transition-colors hover:bg-champagne-500 hover:text-ink-900"
-              >
-                <span>View Instruction Guide</span>
-                <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-              </button>
-              <a
-                href={property.youtubeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="no-tap-highlight inline-flex items-center gap-2 rounded-full bg-red-600/90 px-5 py-2.5 text-xs font-medium uppercase tracking-widest-2 text-white transition-all hover:bg-red-500"
-              >
-                <Video className="h-4 w-4" strokeWidth={1.5} />
-                <span>Watch on YouTube (@fincalibia)</span>
-              </a>
             </div>
           </div>
         </Reveal>
