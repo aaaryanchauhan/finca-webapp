@@ -137,7 +137,7 @@ export const bedrooms: Bedroom[] = [
   {
     id: 'bedroom-3',
     name: 'Valley View Suite',
-    pdfName: '2-GUEST ROOMS',
+    pdfName: 'Guest room',
     subtitle: 'Elevated suite with sunset orientation over Rionegro valley',
     capacity: '2 Guests',
     bedType: 'King Bed',
@@ -161,7 +161,7 @@ export const bedrooms: Bedroom[] = [
   {
     id: 'bedroom-4',
     name: 'Courtyard Sanctuary Suite',
-    pdfName: '2-GUEST ROOMS',
+    pdfName: 'Guest room',
     subtitle: 'Quiet serenity adjacent to internal water feature',
     capacity: '2 Guests',
     bedType: 'Queen Bed',
@@ -198,7 +198,7 @@ export const bedrooms: Bedroom[] = [
   {
     id: 'bedroom-6',
     name: 'Guest Wing Suite',
-    pdfName: '2-GUEST ROOMS',
+    pdfName: 'Guest room',
     subtitle: 'Flexible double suite with serene forest garden views',
     capacity: '2 Guests',
     bedType: 'Double / Twin Beds',
