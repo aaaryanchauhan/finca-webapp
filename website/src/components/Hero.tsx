@@ -9,27 +9,17 @@ interface HeroProps {
 function getGuestNameFromUrl(): string | null {
   if (typeof window === 'undefined') return null;
 
-  // 1. Check standard query params (?guest=Meyer or ?name=Meyer)
-  const searchParams = new URLSearchParams(window.location.search);
-  let guest = searchParams.get('guest') || searchParams.get('name');
-  if (guest) return decodeURIComponent(guest).trim();
-
-  // 2. Check hash params (#guest=Meyer)
-  if (window.location.hash) {
-    const hashStr = window.location.hash.substring(1);
-    const hashParams = new URLSearchParams(hashStr);
-    guest = hashParams.get('guest') || hashParams.get('name');
-    if (guest) return decodeURIComponent(guest).trim();
+  const href = window.location.href;
+  const match = href.match(/(?:guest|name)=([^&/#?]+)/i);
+  if (match && match[1]) {
+    const val = decodeURIComponent(match[1]).replace(/[_-]/g, ' ').trim();
+    if (val) return val;
   }
 
-  // 3. Check pathname slugs (/guest=Meyer or /guest/Meyer)
-  const pathname = window.location.pathname;
-  if (pathname.includes('guest=')) {
-    const match = pathname.match(/guest=([^/&?]+)/i);
-    if (match && match[1]) return decodeURIComponent(match[1]).trim();
-  } else if (pathname.startsWith('/guest/')) {
-    const parts = pathname.split('/');
-    if (parts[2]) return decodeURIComponent(parts[2]).trim();
+  const pathMatch = window.location.pathname.match(/\/guest\/([^/&?]+)/i);
+  if (pathMatch && pathMatch[1]) {
+    const val = decodeURIComponent(pathMatch[1]).replace(/[_-]/g, ' ').trim();
+    if (val) return val;
   }
 
   return null;
@@ -37,10 +27,11 @@ function getGuestNameFromUrl(): string | null {
 
 export function Hero({ onOpenDigitalTour }: HeroProps) {
   const [currentBg, setCurrentBg] = useState(0);
-  const [guestName, setGuestName] = useState<string | null>(null);
+  const [guestName, setGuestName] = useState<string | null>(() => getGuestNameFromUrl());
 
   useEffect(() => {
-    setGuestName(getGuestNameFromUrl());
+    const name = getGuestNameFromUrl();
+    if (name) setGuestName(name);
   }, []);
 
   useEffect(() => {

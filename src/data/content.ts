@@ -10,6 +10,25 @@ import type {
   MemoryEntry,
 } from '@/types';
 
+export function getGuestNameFromUrl(): string | null {
+  if (typeof window === 'undefined') return null;
+
+  const href = window.location.href;
+  const match = href.match(/(?:guest|name)=([^&/#?]+)/i);
+  if (match && match[1]) {
+    const val = decodeURIComponent(match[1]).replace(/[_-]/g, ' ').trim();
+    if (val) return val;
+  }
+
+  const pathMatch = window.location.pathname.match(/\/guest\/([^/&?]+)/i);
+  if (pathMatch && pathMatch[1]) {
+    const val = decodeURIComponent(pathMatch[1]).replace(/[_-]/g, ' ').trim();
+    if (val) return val;
+  }
+
+  return null;
+}
+
 export const property = {
   name: 'Finca Libia',
   tagline: 'Your private guide to the estate & Medellín.',
@@ -53,7 +72,7 @@ export const property = {
   airportDistance: '6 minutes from MDE Airport (Rionegro)',
   cityDistance: '25 minutes to El Poblado / Provenza (Medellín)',
   weather: { temp: '24°', condition: 'Partly cloudy' },
-  guestName: 'Aryan',
+  guestName: getGuestNameFromUrl() || 'Aryan',
   arrivalDate: 'August 15',
   daysUntilArrival: 2,
   stayLength: 3,
