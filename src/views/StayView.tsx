@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { ChevronRight, ArrowRight, ArrowLeft, MapPin, Clock, Lightbulb, X, Bed, Users, Sparkles, Play, Pause, Compass } from 'lucide-react';
-import { amenities, bedrooms, propertyStory, residents, tourStops } from '@/data/content';
+import { ChevronRight, ArrowRight, ArrowLeft, MapPin, Clock, Lightbulb, X, Bed, Users, Sparkles, Play, Pause, Compass, Check } from 'lucide-react';
+import { amenities, amenityCategories, bedrooms, propertyStory, residents, tourStops } from '@/data/content';
 import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
 import type { Amenity, Bedroom } from '@/types';
@@ -305,18 +305,43 @@ export function StayView({ onBack }: StayViewProps) {
 
   // Amenity Detail View
   if (selectedAmenity) {
+    const amenityPhotos = selectedAmenity.photos || [selectedAmenity.image];
+    const currentPhoto = amenityPhotos[activePhotoIdx] || selectedAmenity.image;
+
     return (
       <div className="min-h-screen bg-ink-900">
-        <div className="relative h-[50vh] w-full overflow-hidden">
+        <div className="relative h-[50vh] w-full overflow-hidden bg-ink-950">
           <img
-            src={selectedAmenity.image}
+            src={currentPhoto}
             alt={selectedAmenity.name}
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-all duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-ink-900/40 to-ink-900" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink-900/40 via-transparent to-ink-900" />
           <div className="absolute top-6 left-6 z-10">
-            <BackButton onClick={() => setSelectedAmenity(null)} />
+            <BackButton onClick={() => { setSelectedAmenity(null); setActivePhotoIdx(0); }} />
           </div>
+
+          {amenityPhotos.length > 1 && (
+            <div className="absolute top-6 right-6 z-10 flex items-center gap-2">
+              <span className="text-xs font-mono text-champagne-300 bg-ink-900/80 px-3 py-1 rounded-full border border-ink-700 backdrop-blur-md">
+                {activePhotoIdx + 1} / {amenityPhotos.length}
+              </span>
+              <div className="flex gap-1.5">
+                <button
+                  onClick={() => setActivePhotoIdx((prev) => (prev > 0 ? prev - 1 : amenityPhotos.length - 1))}
+                  className="no-tap-highlight rounded-full bg-ink-900/80 p-2 text-ivory-100 hover:text-champagne-300 border border-ink-700 backdrop-blur-md transition-colors"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setActivePhotoIdx((prev) => (prev < amenityPhotos.length - 1 ? prev + 1 : 0))}
+                  className="no-tap-highlight rounded-full bg-ink-900/80 p-2 text-ivory-100 hover:text-champagne-300 border border-ink-700 backdrop-blur-md transition-colors"
+                >
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="mx-auto max-w-2xl px-6 pb-44 -mt-20 relative z-10">
@@ -326,6 +351,24 @@ export function StayView({ onBack }: StayViewProps) {
               {selectedAmenity.tagline}
             </p>
           </Reveal>
+
+          {amenityPhotos.length > 1 && (
+            <Reveal delay={50}>
+              <div className="mt-6 flex gap-3 overflow-x-auto pb-2">
+                {amenityPhotos.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActivePhotoIdx(i)}
+                    className={`no-tap-highlight relative h-16 w-24 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                      activePhotoIdx === i ? 'border-champagne-400 scale-105 shadow-lg' : 'border-ink-700/80 opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={img} alt="" className="h-full w-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            </Reveal>
+          )}
 
           <Reveal delay={100}>
             <p className="mt-8 text-base leading-relaxed text-ivory-200">
@@ -445,7 +488,7 @@ export function StayView({ onBack }: StayViewProps) {
             <p className="mt-2 text-sm text-stone-400">Click any suite to view all photos, specs, and ensuite bath details.</p>
           </Reveal>
 
-          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-5 items-stretch">
+          <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-5 items-stretch">
             {bedrooms.map((bedroom, idx) => (
               <Reveal key={bedroom.id} delay={idx * 60} className="h-full flex flex-col w-full">
                 <button
@@ -461,26 +504,23 @@ export function StayView({ onBack }: StayViewProps) {
                       alt={bedroom.name}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                    <div className="absolute top-3 left-3 rounded-full bg-ink-900/80 px-3 py-1 text-[10px] uppercase tracking-widest-2 text-champagne-300 border border-champagne-400/30 backdrop-blur-sm">
+                    <div className="absolute top-2 left-2 sm:top-3 sm:left-3 rounded-full bg-ink-900/80 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] uppercase tracking-widest-2 text-champagne-300 border border-champagne-400/30 backdrop-blur-sm">
                       {bedroom.pdfName}
                     </div>
-                    <div className="absolute top-3 right-3 rounded-full bg-ink-900/80 px-3 py-1 text-[10px] font-mono text-ivory-200 border border-ink-700 backdrop-blur-sm">
-                      {bedroom.photos.length + (bedroom.bathroomPhotos?.length || 0)} Photos
-                    </div>
                   </div>
-                  <div className="p-5 flex-1 flex flex-col justify-between w-full min-h-[140px]">
+                  <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between w-full">
                     <div>
-                      <span className="text-[10px] uppercase tracking-widest-2 text-champagne-400 font-medium block">{bedroom.pdfName}</span>
-                      <h3 className="mt-1 font-serif text-2xl font-light text-ivory-100 transition-colors group-hover:text-champagne-300 leading-tight min-h-[2.5rem] flex items-center">
+                      <span className="text-[9px] sm:text-[10px] uppercase tracking-widest-2 text-champagne-400 font-medium block">{bedroom.pdfName}</span>
+                      <h3 className="mt-1 font-serif text-base sm:text-2xl font-light text-ivory-100 transition-colors group-hover:text-champagne-300 leading-tight">
                         {bedroom.name}
                       </h3>
-                      <p className="mt-1 text-xs text-stone-400 leading-relaxed min-h-[2rem]">
+                      <p className="mt-1 text-[11px] sm:text-xs text-stone-400 leading-relaxed line-clamp-2">
                         {bedroom.subtitle}
                       </p>
                     </div>
-                    <div className="mt-4 flex items-center justify-between text-xs text-stone-400 border-t border-ink-700/60 pt-3">
-                      <span>{bedroom.bedType}</span>
-                      <span className="text-champagne-400 group-hover:translate-x-1 transition-transform">Explore →</span>
+                    <div className="mt-3 sm:mt-4 flex items-center justify-between text-[10px] sm:text-xs text-stone-400 border-t border-ink-700/60 pt-2.5 sm:pt-3">
+                      <span className="truncate pr-1">{bedroom.bedType}</span>
+                      <span className="text-champagne-400 group-hover:translate-x-1 transition-transform shrink-0">Explore →</span>
                     </div>
                   </div>
                 </button>
@@ -490,11 +530,12 @@ export function StayView({ onBack }: StayViewProps) {
         </div>
       </section>
 
-      {/* Amenities */}
+      {/* Amenities & Featured Grounds */}
       <section className="px-6 py-16 bg-ink-800/20 border-t border-ink-700">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <p className="text-xs uppercase tracking-widest-3 text-stone-500">Amenities & Grounds</p>
+            <p className="text-xs uppercase tracking-widest-3 text-champagne-400 font-medium">Estate Highlights</p>
+            <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light text-ivory-50">Featured Amenities</h2>
           </Reveal>
           <div className="mt-8 space-y-px">
             {amenities.map((amenity, i) => (
@@ -516,38 +557,51 @@ export function StayView({ onBack }: StayViewProps) {
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Property Story */}
-      <section className="px-6 py-16 bg-ink-800/40 border-t border-ink-700">
-        <div className="mx-auto max-w-3xl">
-          <Reveal>
-            <p className="text-xs uppercase tracking-widest-3 text-stone-500">The Property</p>
-            <h2 className="mt-3 font-serif text-4xl font-light text-ivory-50">The Story of Finca Libia</h2>
-          </Reveal>
+          {/* Complete Categorized Amenities Breakdown */}
+          <div className="mt-20 pt-12 border-t border-ink-700/80">
+            <Reveal>
+              <div className="flex items-center gap-2 text-champagne-400">
+                <Sparkles className="h-4 w-4" strokeWidth={1.5} />
+                <span className="text-[10px] uppercase tracking-widest-3 font-medium">Amenities</span>
+              </div>
+              <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light text-ivory-50">
+                What This Place Offers
+              </h2>
+              <p className="mt-2 text-sm text-stone-400 leading-relaxed font-serif italic">
+                Every luxury, convenience, and entertainment feature included with your stay at Finca Libia.
+              </p>
+            </Reveal>
 
-          <div className="mt-12 space-y-16">
-            {propertyStory.map((section, i) => (
-              <Reveal key={section.id} delay={i * 80}>
-                <div className="overflow-hidden rounded-2xl border border-ink-700/80 shadow-xl">
-                  <img
-                    src={section.image}
-                    alt={section.title}
-                    className="w-full object-cover"
-                    style={{ aspectRatio: '16/9' }}
-                  />
-                </div>
-                <div className="mt-6">
-                  <p className="text-xs uppercase tracking-widest-2 text-stone-500">{section.label}</p>
-                  <h3 className="mt-2 font-serif text-3xl font-light text-ivory-100">{section.title}</h3>
-                  <p className="mt-4 text-base leading-relaxed text-stone-300">{section.body}</p>
-                </div>
-              </Reveal>
-            ))}
+            <div className="mt-10 grid grid-cols-1 gap-6">
+              {amenityCategories.map((cat, i) => (
+                <Reveal key={cat.id} delay={i * 40}>
+                  <div className="rounded-2xl border border-ink-700/80 bg-ink-900/60 p-6 backdrop-blur-md space-y-4 hover:border-champagne-500/30 transition-all">
+                    <h3 className="font-serif text-xl font-light text-ivory-100 border-b border-ink-700/60 pb-3">
+                      {cat.title}
+                    </h3>
+                    <ul className="space-y-3">
+                      {cat.items.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-xs">
+                          <Check className="h-4 w-4 text-champagne-400 shrink-0 mt-0.5" strokeWidth={2} />
+                          <div>
+                            <p className="text-ivory-100 font-medium">{item.name}</p>
+                            {item.detail && (
+                              <p className="text-[11px] text-stone-400 leading-normal mt-0.5">{item.detail}</p>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
           </div>
         </div>
       </section>
+
+
 
       {/* Residents */}
       <section className="px-6 py-16">

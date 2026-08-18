@@ -1,5 +1,6 @@
 import type {
   Amenity,
+  AmenityCategory,
   Bedroom,
   ExploreCategory,
   ItineraryPace,
@@ -238,7 +239,7 @@ export const amenities: Amenity[] = [
     insiderTip: 'Follow with a cold plunge in the pool. The contrast is invigorating — guests swear by it before dinner.',
     bestTime: 'Evening, before dinner',
     location: 'Adjacent to the pool house',
-    image: '/photos/patio/patio_02.jpeg',
+    image: '/photos/exterior/exterior_14.jpeg',
   },
   {
     id: 'tennis',
@@ -297,13 +298,159 @@ export const amenities: Amenity[] = [
     name: 'Farm Animals & Furry Crew',
     tagline: 'Friendly llamas, Swiss cows, Bruno & Luna.',
     description:
-      'Explore the 12-acre mountain pastures where friendly llamas, Swiss-German cows, Bruno the golden retriever, and Luna the cat reside.',
+      'Explore the 3.5-acre mountain pastures where friendly llamas, Swiss-German cows, Bruno the golden retriever, and Luna the cat reside.',
     instructions:
       'Feel free to feed and pet the animals under staff supervision. All resident animals are gentle and off-leash.',
     insiderTip: 'Morning visits right after breakfast are the best time to see the cows and llamas grazing in the pastures.',
     bestTime: 'Morning or late afternoon',
     location: 'Estate pastures & surrounding grounds',
-    image: '/photos/additional_photos/alpaca.jpeg',
+    image: '/photos/additional_photos/pets.jpeg',
+    photos: [
+      '/photos/additional_photos/pets.jpeg',
+      '/photos/additional_photos/cow.jpeg',
+      '/photos/additional_photos/dogs.jpeg',
+    ],
+  },
+];
+
+export const amenityCategories: AmenityCategory[] = [
+  {
+    id: 'scenic-views',
+    title: 'Scenic Views',
+    icon: 'Eye',
+    items: [
+      { name: 'Valley view', detail: 'Panoramic vistas across the Rionegro coffee valley' },
+      { name: 'Mountain view', detail: 'Surrounding Andean mountain peaks' },
+      { name: 'Pool view', detail: 'Direct views over the 25m infinity pool & sun deck' },
+    ],
+  },
+  {
+    id: 'popular-services',
+    title: 'Popular & Included Services',
+    icon: 'Sparkles',
+    items: [
+      { name: 'Housekeeping available', detail: 'Included Monday to Saturday' },
+      { name: 'Private pool', detail: 'Open 24 hours, heated to 28°C' },
+      { name: 'Private hot tub & whirlpool', detail: 'Available all year, open 24 hours' },
+      { name: 'Luggage drop-off allowed', detail: 'Convenience for early arrival or late departure' },
+      { name: 'Long-term stays allowed', detail: 'Stays of 28 days or more welcome' },
+    ],
+  },
+  {
+    id: 'bathroom',
+    title: 'Bathroom & Spa Essentials',
+    icon: 'Bath',
+    items: [
+      { name: 'Bath & Bidet', detail: 'Deep soaking tub & bidet features' },
+      { name: 'Outdoor shower', detail: 'Fresh air rinse by the pool house' },
+      { name: 'Hot water & Shower gel', detail: 'Continuous high-capacity hot water' },
+      { name: 'Shampoo, Conditioner & Body Soap', detail: 'Johnson & Johnson body soap provided' },
+      { name: 'Hairdryer & Cleaning products', detail: 'Complete grooming necessities' },
+    ],
+  },
+  {
+    id: 'bedroom-laundry',
+    title: 'Bedroom & Laundry',
+    icon: 'Shirt',
+    items: [
+      { name: 'Free washing machine & dryer', detail: 'In-unit laundry facilities' },
+      { name: 'Essentials', detail: 'Towels, bed sheets, soap, and toilet paper' },
+      { name: 'Bed linen & Cotton linen', detail: 'Luxury organic cotton bedding' },
+      { name: 'Extra pillows & blankets', detail: 'Cosy bedding for cool mountain nights' },
+      { name: 'Walk-in wardrobe & Clothes storage', detail: 'Wardrobe and chest of drawers' },
+      { name: 'Room-darkening blinds & Hangers', detail: 'Deep sleep window coverings' },
+      { name: 'Clothes drying rack & Safe', detail: 'In-room security safe' },
+    ],
+  },
+  {
+    id: 'entertainment',
+    title: 'Entertainment & Sports',
+    icon: 'Trophy',
+    items: [
+      { name: 'Tennis court & Pickleball', detail: 'Red clay court with night floodlights' },
+      { name: 'Basketball court & Badminton', detail: 'Multi-sport court setups' },
+      { name: 'Private Cinema & TV', detail: 'Soundproofed theater room' },
+      { name: 'Denon sound system', detail: 'Bluetooth & aux high-fidelity audio' },
+      { name: 'Record player & Vinyl collection', detail: 'Analog listening lounge' },
+      { name: 'Exercise equipment', detail: 'Free weights, stationary bike, treadmill, yoga mat, workout bench' },
+      { name: 'Bowling alley & Arcade games', detail: 'Vintage bowling lane & arcade classics' },
+      { name: 'Pool table & Table tennis', detail: 'Billiards & ping pong tables' },
+      { name: 'Table football & Card table', detail: 'Foosball & game tables' },
+      { name: 'Speakeasy Bar & Books', detail: 'Fully stocked bar & reading materials' },
+      { name: 'Life-size games & Game room', detail: 'Giant outdoor & indoor games' },
+    ],
+  },
+  {
+    id: 'family',
+    title: 'Family & Children',
+    icon: 'Heart',
+    items: [
+      { name: 'Board games', detail: 'Curated collection for all ages' },
+      { name: 'Outdoor playground', detail: 'Area equipped with play structures for children' },
+      { name: 'Babysitter recommendations', detail: 'Trusted local care contacts available' },
+    ],
+  },
+  {
+    id: 'heating-cooling',
+    title: 'Heating & Cooling',
+    icon: 'Flame',
+    items: [
+      { name: 'Indoor fireplace (Gas)', detail: 'Cosy focal fireplaces in living areas' },
+      { name: 'Portable fans', detail: 'Available for bedroom airflow' },
+    ],
+  },
+  {
+    id: 'home-safety',
+    title: 'Home Safety & Connectivity',
+    icon: 'ShieldCheck',
+    items: [
+      { name: 'High-speed Wi-Fi & Ethernet', detail: 'Comprehensive high-speed internet' },
+      { name: 'Exterior security cameras', detail: '24/7 security monitoring on grounds' },
+      { name: 'Fire extinguisher & First aid kit', detail: 'On-site safety provisions' },
+    ],
+  },
+  {
+    id: 'kitchen-dining',
+    title: 'Kitchen & Gourmet Dining',
+    icon: 'Utensils',
+    items: [
+      { name: 'Gourmet Kitchen', detail: 'Space where guests can cook their own meals' },
+      { name: 'KitchenAid Gas Cooker & Oven', detail: 'Stainless steel gas range & single oven' },
+      { name: 'Liebherr Refrigerator & Freezer', detail: 'Includes ice machine & mini fridge' },
+      { name: 'Coffee maker & Artisanal Coffee', detail: 'Espresso machine with single-origin beans' },
+      { name: 'Dishwasher & Microwave', detail: 'Full-size cleanup appliances' },
+      { name: 'Cooking basics', detail: 'Pots, pans, oil, salt, and pepper' },
+      { name: 'Crockery, Cutlery & Wine glasses', detail: 'Bowls, chopsticks, plates, cups, etc.' },
+      { name: 'Blender, Toaster & Kettle', detail: 'Complete breakfast & prep gadgets' },
+      { name: 'Barbecue utensils & Pizza oven', detail: 'Grill, charcoal, bamboo/iron skewers' },
+      { name: 'Dining table', detail: 'Teak dining salon seating up to 16' },
+    ],
+  },
+  {
+    id: 'outdoor-grounds',
+    title: 'Outdoor & Grounds',
+    icon: 'Trees',
+    items: [
+      { name: 'Private back garden (Fully fenced)', detail: '3.5 acres of manicured lawn and pastures' },
+      { name: 'Private outdoor kitchen & BBQ grill', detail: 'Covered terrace for outdoor cooking' },
+      { name: 'Firepit & Gas fireplace', detail: 'Gathering lounge spots under the stars' },
+      { name: 'Outdoor furniture & Dining area', detail: 'Teak loungers & alfresco dining setup' },
+      { name: 'Sun loungers & Pizza oven', detail: 'Poolside lounging & stone pizza oven' },
+      { name: 'Private entrance', detail: 'Separate street & building entrance' },
+    ],
+  },
+  {
+    id: 'facilities-parking',
+    title: 'Facilities & Parking',
+    icon: 'Car',
+    items: [
+      { name: 'Private Sauna & Steam room', detail: 'Cedar Finnish sauna & eucalyptus steam room' },
+      { name: 'Private Gym in building', detail: 'Dedicated fitness room with garden view' },
+      { name: 'Free parking on premises', detail: 'Ample private parking inside gates' },
+      { name: 'Stables & Pastures', detail: 'Home to friendly llamas and Swiss cows' },
+      { name: 'Massage table', detail: 'In-suite spa service setup' },
+      { name: 'Pool house & Guest house', detail: 'Dedicated outdoor pavilion & wings' },
+    ],
   },
 ];
 
@@ -394,7 +541,7 @@ export const tourStops: TourStop[] = [
     number: '10',
     title: 'Cozy corners all around the property',
     category: 'Estate Lounges',
-    description: 'Thoughtfully positioned lounging nooks, outdoor hammocks, daybeds, and courtyard reading spots across 12 acres.',
+    description: 'Thoughtfully positioned lounging nooks, outdoor hammocks, daybeds, and courtyard reading spots across 3.5 acres.',
     image: '/photos/patio/patio_01.jpeg',
     details: 'Quiet sanctuaries designed for reading, coffee, and relaxing in nature.',
   },
@@ -413,7 +560,7 @@ export const tourStops: TourStop[] = [
     title: 'Sauna',
     category: 'Wellness Spa',
     description: 'Traditional Finnish cedar sauna crafted from Canadian wood, heating up to 85°C.',
-    image: '/photos/patio/patio_02.jpeg',
+    image: '/photos/additional_photos/additional_photos_19.jpeg',
     details: 'Pair a 15-minute sauna session with a cold pool plunge for thermal restoration.',
   },
   {
@@ -422,7 +569,7 @@ export const tourStops: TourStop[] = [
     title: 'Steam Room',
     category: 'Wellness Spa',
     description: 'Eucalyptus steam bath designed for muscle recovery and deep relaxation.',
-    image: '/photos/patio/patio_04.jpeg',
+    image: '/photos/exterior/exterior_14.jpeg',
     details: 'Touchpad controls activate dense eucalyptus-infused steam within minutes.',
   },
   {
@@ -466,8 +613,8 @@ export const tourStops: TourStop[] = [
     number: '18',
     title: 'Farm Animals',
     category: 'Farm & Wildlife',
-    description: 'Friendly alpacas, Swiss cows, Bruno the golden retriever, Luna the cat, donkeys, and farm pets roaming 12 mountain acres.',
-    image: '/photos/additional_photos/alpaca.jpeg',
+    description: 'Friendly alpacas, Swiss cows, Bruno the golden retriever, Luna the cat, donkeys, and farm pets roaming 3.5 mountain acres.',
+    image: '/photos/additional_photos/pets.jpeg',
     details: 'Guests can pet and feed animals under staff supervision during morning pasture walks.',
   },
 ];
@@ -516,7 +663,7 @@ export const residents: Resident[] = [
     name: 'Swiss-German Cows & Llamas',
     species: 'Farm Animals',
     description: 'Friendly farm animals that graze in the green pastures surrounding the estate.',
-    image: '/photos/additional_photos/alpaca.jpeg',
+    image: '/photos/additional_photos/cow.jpeg',
   },
 ];
 
@@ -638,7 +785,7 @@ export const exploreCategories: ExploreCategory[] = [
         name: 'Estate Reading Nooks',
         note: 'Reading Nooks & Terraces',
         distance: 'On Estate · Villa Nooks',
-        quote: 'Quiet sanctuaries positioned across 12 acres, designed for reading, coffee, and tranquil relaxation.',
+        quote: 'Quiet sanctuaries positioned across 3.5 acres, designed for reading, coffee, and tranquil relaxation.',
         image: '/photos/living_room/living_room_01.jpeg',
       },
       {
@@ -657,21 +804,14 @@ export const exploreCategories: ExploreCategory[] = [
         quote: 'Explore the scenic walking trails around the estate grounds and enjoy the mountain air.',
         image: '/photos/exterior/exterior_10.jpeg',
       },
-      {
-        id: 'act-10',
-        name: 'Waterfall Mountain Hike',
-        note: 'Mountain Waterfall Exploration',
-        distance: 'Nearby · Nature Trail',
-        quote: 'Discover scenic mountain trails leading to a secluded natural waterfall.',
-        image: '/photos/additional_photos/additional_photos_12.jpeg',
-      },
+
       {
         id: 'act-11',
         name: 'Eucalyptus Steam Bath',
         note: 'Eucalyptus Steam Bath',
         distance: 'On Estate · Wellness Center',
         quote: 'Step into the eucalyptus steam bath for muscle restoration and deep thermal relaxation.',
-        image: '/photos/additional_photos/additional_photos_28.avif',
+        image: '/photos/exterior/exterior_14.jpeg',
       },
       {
         id: 'act-12',

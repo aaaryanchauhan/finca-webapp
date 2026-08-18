@@ -8,6 +8,19 @@ export interface Amenity {
   bestTime: string;
   location: string;
   image: string;
+  photos?: string[];
+}
+
+export interface AmenityCategoryItem {
+  name: string;
+  detail?: string;
+}
+
+export interface AmenityCategory {
+  id: string;
+  title: string;
+  icon: string;
+  items: AmenityCategoryItem[];
 }
 
 export interface Bedroom {

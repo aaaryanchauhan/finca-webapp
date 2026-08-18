@@ -96,22 +96,13 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
           </Reveal>
           <Reveal delay={200}>
             <div className="mt-10 flex items-center gap-4">
-              {!isInHouse ? (
-                <button
-                  onClick={() => openNavigation(selectedRec)}
-                  className="no-tap-highlight flex-1 flex items-center justify-center gap-2 rounded bg-champagne-500/90 py-3 text-xs uppercase tracking-widest-2 font-medium text-ink-900 transition-colors hover:bg-champagne-400"
-                >
-                  <MapPin className="h-4 w-4" strokeWidth={1.5} />
-                  <span>Navigate to Location</span>
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleRequestDriver()}
-                  className="no-tap-highlight flex-1 flex items-center justify-center gap-2 rounded bg-champagne-500/90 py-3 text-xs uppercase tracking-widest-2 font-medium text-ink-900 transition-colors hover:bg-champagne-400"
-                >
-                  <span>Request Concierge Assistance</span>
-                </button>
-              )}
+              <button
+                onClick={() => openNavigation(selectedRec)}
+                className="no-tap-highlight flex-1 flex items-center justify-center gap-2 rounded bg-champagne-500/90 py-3 text-xs uppercase tracking-widest-2 font-medium text-ink-900 transition-colors hover:bg-champagne-400"
+              >
+                <MapPin className="h-4 w-4" strokeWidth={1.5} />
+                <span>Navigate to Location</span>
+              </button>
               <button
                 onClick={() => {
                   setSelectedRec(null);
