@@ -52,15 +52,15 @@ export function HomeView({ onNavigate }: HomeViewProps) {
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
           <div className="animate-fade-in flex flex-col items-center">
-            <p className="text-xs sm:text-sm font-medium uppercase tracking-widest-3 text-champagne-300 drop-shadow-md">
-              {property.guestName ? `Welcome, ${property.guestName}` : 'Welcome to'}
+            <p className="text-xs font-medium uppercase tracking-widest-3 text-champagne-300 drop-shadow-md">
+              Welcome to
             </p>
           </div>
           <h1 className="animate-fade-up animate-delay-100 mt-3 font-serif text-5xl font-light tracking-tight text-ivory-50 hero-text-shadow drop-shadow-xl sm:text-6xl md:text-7xl">
             {property.name}
           </h1>
           <p className="animate-fade-up animate-delay-200 mt-4 max-w-md px-4 font-serif text-lg font-light italic leading-relaxed text-ivory-100 hero-text-shadow drop-shadow-md sm:text-xl">
-            {property.guestName ? `Excited to host you. ${property.tagline}` : property.tagline}
+            {property.tagline}
           </p>
 
           <button

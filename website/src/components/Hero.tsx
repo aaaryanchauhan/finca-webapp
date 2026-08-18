@@ -6,33 +6,8 @@ interface HeroProps {
   onOpenDigitalTour: () => void;
 }
 
-function getGuestNameFromUrl(): string | null {
-  if (typeof window === 'undefined') return null;
-
-  const href = window.location.href;
-  const match = href.match(/(?:guest|name)=([^&/#?]+)/i);
-  if (match && match[1]) {
-    const val = decodeURIComponent(match[1]).replace(/[_-]/g, ' ').trim();
-    if (val) return val;
-  }
-
-  const pathMatch = window.location.pathname.match(/\/guest\/([^/&?]+)/i);
-  if (pathMatch && pathMatch[1]) {
-    const val = decodeURIComponent(pathMatch[1]).replace(/[_-]/g, ' ').trim();
-    if (val) return val;
-  }
-
-  return null;
-}
-
 export function Hero({ onOpenDigitalTour }: HeroProps) {
   const [currentBg, setCurrentBg] = useState(0);
-  const [guestName, setGuestName] = useState<string | null>(() => getGuestNameFromUrl());
-
-  useEffect(() => {
-    const name = getGuestNameFromUrl();
-    if (name) setGuestName(name);
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -73,18 +48,12 @@ export function Hero({ onOpenDigitalTour }: HeroProps) {
 
       {/* Hero Central Content */}
       <div className="relative z-20 mx-auto max-w-4xl px-6 text-center mt-12">
-        <p className="text-xs sm:text-sm font-medium uppercase tracking-widest-3 text-champagne-300 drop-shadow-md mb-3 animate-fade-down">
-          {guestName ? `Welcome, ${guestName}` : 'Private Luxury Estate'}
-        </p>
-
         <h1 className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight text-ivory-50 hero-text-shadow drop-shadow-2xl animate-fade-up">
           Finca Libia
         </h1>
 
         <p className="mt-6 max-w-3xl mx-auto font-serif text-xl sm:text-2xl font-light italic leading-relaxed text-ivory-100 hero-text-shadow drop-shadow-md animate-fade-up animate-delay-100">
-          {guestName
-            ? `Excited to host you at Finca Libia. Designed with exquisite attention to detail, this private sanctuary redefines countryside elegance.`
-            : `Escape to Finca Libia, a luxury estate unlike any other. Designed with exquisite attention to detail, this newly built farmhouse redefines countryside elegance.`}
+          Escape to Finca Libia, a luxury estate unlike any other. Designed with exquisite attention to detail, this newly built farmhouse redefines countryside elegance.
         </p>
 
         {/* Action Button: Featured Digital Tour */}
