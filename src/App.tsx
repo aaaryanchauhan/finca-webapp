@@ -9,6 +9,7 @@ import { ItineraryView } from '@/views/ItineraryView';
 import { PreArrivalView } from '@/views/PreArrivalView';
 import { CheckoutView } from '@/views/CheckoutView';
 import { HouseGuideView } from '@/views/HouseGuideView';
+import { property } from '@/data/content';
 
 type View = 'home' | 'stay' | 'explore' | 'concierge' | 'memories' | 'itinerary' | 'pre-arrival' | 'checkout' | 'guide';
 
@@ -22,6 +23,14 @@ const navItems: { id: View; label: string; icon: typeof Home }[] = [
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const guestParam = params.get('guest');
+    if (guestParam) {
+      property.guestName = guestParam;
+    }
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);

@@ -15,6 +15,7 @@ import { Footer } from './components/Footer';
 import { InquiryModal } from './components/InquiryModal';
 import type { InquiryPreFillData } from './components/InquiryModal';
 import { DigitalTourModal } from './components/DigitalTourModal';
+import { DigitalTourBanner } from './components/DigitalTourBanner';
 import { PhotosPage } from './components/PhotosPage';
 import type { Suite } from './data/villaData';
 
@@ -91,6 +92,9 @@ export default function App() {
 
       {/* Estate Highlights Bar */}
       <StatsBar />
+
+      {/* Interactive Digital Estate Tour Banner */}
+      <DigitalTourBanner onOpenDigitalTour={handleOpenDigitalTour} />
 
       {/* Property Highlights Section (Pool/Hot Tub, Home Gym, 5-Star Check-in) */}
       <PropertyHighlightsSection />
