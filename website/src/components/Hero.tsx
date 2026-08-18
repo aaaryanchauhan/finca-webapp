@@ -1,13 +1,47 @@
 import { useState, useEffect } from 'react';
-import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Play, ChevronLeft, ChevronRight, Sparkles } from 'lucide-react';
 import { villaInfo } from '../data/villaData';
 
 interface HeroProps {
   onOpenDigitalTour: () => void;
 }
 
+function getGuestNameFromUrl(): string | null {
+  if (typeof window === 'undefined') return null;
+
+  // 1. Check standard query params (?guest=Meyer or ?name=Meyer)
+  const searchParams = new URLSearchParams(window.location.search);
+  let guest = searchParams.get('guest') || searchParams.get('name');
+  if (guest) return decodeURIComponent(guest).trim();
+
+  // 2. Check hash params (#guest=Meyer)
+  if (window.location.hash) {
+    const hashStr = window.location.hash.substring(1);
+    const hashParams = new URLSearchParams(hashStr);
+    guest = hashParams.get('guest') || hashParams.get('name');
+    if (guest) return decodeURIComponent(guest).trim();
+  }
+
+  // 3. Check pathname slugs (/guest=Meyer or /guest/Meyer)
+  const pathname = window.location.pathname;
+  if (pathname.includes('guest=')) {
+    const match = pathname.match(/guest=([^/&?]+)/i);
+    if (match && match[1]) return decodeURIComponent(match[1]).trim();
+  } else if (pathname.startsWith('/guest/')) {
+    const parts = pathname.split('/');
+    if (parts[2]) return decodeURIComponent(parts[2]).trim();
+  }
+
+  return null;
+}
+
 export function Hero({ onOpenDigitalTour }: HeroProps) {
   const [currentBg, setCurrentBg] = useState(0);
+  const [guestName, setGuestName] = useState<string | null>(null);
+
+  useEffect(() => {
+    setGuestName(getGuestNameFromUrl());
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -48,12 +82,24 @@ export function Hero({ onOpenDigitalTour }: HeroProps) {
 
       {/* Hero Central Content */}
       <div className="relative z-20 mx-auto max-w-4xl px-6 text-center mt-12">
+        {/* Dynamic Personalized Guest Welcome Badge */}
+        {guestName && (
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-champagne-400/50 bg-ink-900/85 px-6 py-2.5 backdrop-blur-md shadow-2xl gold-border-glow animate-fade-down">
+            <Sparkles className="h-4 w-4 text-champagne-400 animate-pulse shrink-0" />
+            <span className="font-serif text-sm sm:text-base font-light tracking-wide text-ivory-50">
+              Welcome <span className="text-champagne-300 font-semibold">{guestName}</span> — Excited to host you
+            </span>
+          </div>
+        )}
+
         <h1 className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-light tracking-tight text-ivory-50 hero-text-shadow drop-shadow-2xl animate-fade-up">
           Finca Libia
         </h1>
 
         <p className="mt-6 max-w-3xl mx-auto font-serif text-xl sm:text-2xl font-light italic leading-relaxed text-ivory-100 hero-text-shadow drop-shadow-md animate-fade-up animate-delay-100">
-          Escape to Finca Libia, a luxury estate unlike any other. Designed with exquisite attention to detail, this newly built farmhouse redefines countryside elegance.
+          {guestName
+            ? `Welcome ${guestName}, excited to host you at Finca Libia. Designed with exquisite attention to detail, this private luxury estate redefines countryside elegance.`
+            : `Escape to Finca Libia, a luxury estate unlike any other. Designed with exquisite attention to detail, this newly built farmhouse redefines countryside elegance.`}
         </p>
 
         {/* Action Button: Featured Digital Tour */}

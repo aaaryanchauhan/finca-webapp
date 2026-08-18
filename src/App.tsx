@@ -20,13 +20,41 @@ const navItems: { id: View; label: string; icon: typeof Home }[] = [
   { id: 'guide', label: 'Guide', icon: Info },
 ];
 
+function getGuestNameFromUrl(): string | null {
+  if (typeof window === 'undefined') return null;
+
+  // 1. Check standard query params (?guest=Meyer or ?name=Meyer)
+  const searchParams = new URLSearchParams(window.location.search);
+  let guest = searchParams.get('guest') || searchParams.get('name');
+  if (guest) return decodeURIComponent(guest).trim();
+
+  // 2. Check hash params (#guest=Meyer)
+  if (window.location.hash) {
+    const hashStr = window.location.hash.substring(1);
+    const hashParams = new URLSearchParams(hashStr);
+    guest = hashParams.get('guest') || hashParams.get('name');
+    if (guest) return decodeURIComponent(guest).trim();
+  }
+
+  // 3. Check pathname slugs (/guest=Meyer or /guest/Meyer)
+  const pathname = window.location.pathname;
+  if (pathname.includes('guest=')) {
+    const match = pathname.match(/guest=([^/&?]+)/i);
+    if (match && match[1]) return decodeURIComponent(match[1]).trim();
+  } else if (pathname.startsWith('/guest/')) {
+    const parts = pathname.split('/');
+    if (parts[2]) return decodeURIComponent(parts[2]).trim();
+  }
+
+  return null;
+}
+
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const guestParam = params.get('guest');
+    const guestParam = getGuestNameFromUrl();
     if (guestParam) {
       property.guestName = guestParam;
     }
