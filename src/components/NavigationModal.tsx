@@ -9,6 +9,7 @@ export interface NavigationTarget {
   description?: string;
   type?: 'off_estate' | 'on_estate';
   insiderTip?: string;
+  mapUrl?: string;
 }
 
 interface NavigationModalProps {
@@ -23,12 +24,16 @@ export function NavigationModal({ target, onClose, onRequestDriver }: Navigation
   if (!target) return null;
 
   const isOffEstate = target.type !== 'on_estate';
-  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    target.name + ' Medellín Colombia'
-  )}`;
-  const appleMapsUrl = `https://maps.apple.com/?q=${encodeURIComponent(
-    target.name + ' Medellín Colombia'
-  )}`;
+  const googleMapsUrl =
+    target.mapUrl ||
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      target.name + ' Medellín Colombia'
+    )}`;
+  const appleMapsUrl =
+    target.mapUrl ||
+    `https://maps.apple.com/?q=${encodeURIComponent(
+      target.name + ' Medellín Colombia'
+    )}`;
 
   const handleDriverRequest = () => {
     setDriverRequested(true);

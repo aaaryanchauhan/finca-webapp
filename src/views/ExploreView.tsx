@@ -36,12 +36,17 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
   const currentCategory = exploreCategories.find((c) => c.id === activeCategory);
 
   const openNavigation = (rec: Recommendation, categoryLabel?: string) => {
+    if (rec.mapUrl) {
+      window.open(rec.mapUrl, '_blank', 'noopener,noreferrer');
+      return;
+    }
     setNavTarget({
       name: rec.name,
       category: categoryLabel || currentCategory?.label || 'Recommendation',
       distance: rec.distance,
       description: rec.note,
       insiderTip: rec.quote,
+      mapUrl: rec.mapUrl,
       type: 'off_estate',
     });
   };

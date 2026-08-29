@@ -702,7 +702,8 @@ export const exploreCategories: ExploreCategory[] = [
         note: '',
         distance: 'Medellín',
         quote: 'One of our favorite restaurants in Medellín. Creative cuisine, excellent ingredients, and a relaxed but sophisticated atmosphere.',
-        image: '/photos/dining_area/dining_area_01.jpeg',
+        image: '/photos/ocio.jpg',
+        mapUrl: 'https://maps.app.goo.gl/kAhMUEKL3o5S4jpp8',
       },
       {
         id: 'sambombi',
