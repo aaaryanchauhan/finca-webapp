@@ -203,7 +203,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
 
           <Reveal delay={200}>
             <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-              {!isInHouse && (
+              {!isInHouse && !selectedRec.hideDirections && (
                 <button
                   onClick={() => openNavigation(selectedRec)}
                   className="no-tap-highlight w-full sm:flex-1 flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-champagne-500/90 py-3.5 text-xs uppercase tracking-widest-2 font-medium text-ink-900 transition-colors hover:bg-champagne-400 active:scale-95"
@@ -245,11 +245,6 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
           <Reveal>
             <p className="text-xs uppercase tracking-widest-3 text-champagne-400 font-medium">Finca Libia Curations</p>
             <h1 className="mt-1.5 font-serif text-3xl sm:text-4xl md:text-5xl font-light text-ivory-50">{currentCategory.label}</h1>
-            {!isRestaurantCategory && (
-              <p className="mt-2 text-xs font-serif italic text-stone-400 leading-relaxed">
-                {guideIntro.disclaimer}
-              </p>
-            )}
           </Reveal>
           <div className="mt-8 sm:mt-10 space-y-4 sm:space-y-5">
             {currentCategory.recommendations.map((rec, i) => {
@@ -300,13 +295,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                               <Navigation className="h-3.5 w-3.5" strokeWidth={1.5} />
                               <span>Directions</span>
                             </button>
-                            <button
-                              onClick={() => setSelectedRec(rec)}
-                              className="no-tap-highlight min-h-[36px] min-w-[36px] flex items-center justify-center p-2 text-stone-400 hover:text-champagne-400 transition-colors active:scale-95"
-                              title="View Full Details"
-                            >
-                              <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
-                            </button>
+
                           </div>
                         </div>
 
@@ -366,7 +355,8 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                               currentCategory.id === 'do' ||
                               rec.distance.toLowerCase().includes('on estate') ||
                               rec.distance.toLowerCase().includes('in-villa') ||
-                              rec.distance.toLowerCase().includes('on request')
+                              rec.distance.toLowerCase().includes('on request') ||
+                              rec.hideDirections
                             ) && (
                               <button
                                 onClick={() => openNavigation(rec, currentCategory.label)}
@@ -377,13 +367,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                                 <span>Directions</span>
                               </button>
                             )}
-                            <button
-                              onClick={() => setSelectedRec(rec)}
-                              className="no-tap-highlight min-h-[36px] min-w-[36px] flex items-center justify-center p-2 text-stone-400 hover:text-champagne-400 transition-colors active:scale-95"
-                              title="View Full Details"
-                            >
-                              <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
-                            </button>
+
                           </div>
                         </div>
 
@@ -427,14 +411,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                         {rec.actionText && (
                           <div className="ml-8 sm:ml-10 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-xl border border-champagne-400/30 bg-champagne-500/10 p-3 text-xs text-champagne-200">
                             <span className="font-serif italic">{rec.actionText}</span>
-                            {onNavigate && (
-                              <button
-                                onClick={() => onNavigate('concierge')}
-                                className="no-tap-highlight shrink-0 text-[10px] uppercase tracking-wider font-semibold underline text-champagne-300 hover:text-champagne-100 py-1"
-                              >
-                                Ask Concierge →
-                              </button>
-                            )}
+
                           </div>
                         )}
                       </div>
@@ -475,9 +452,6 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
             </h1>
             <p className="mt-3 sm:mt-4 max-w-xl font-serif text-sm sm:text-base md:text-lg font-light italic text-ivory-200/90 hero-text-shadow leading-relaxed">
               {guideIntro.subtitle}
-            </p>
-            <p className="mt-2 sm:mt-3 text-[11px] sm:text-xs text-champagne-400/90 font-mono tracking-wide">
-              {guideIntro.disclaimer}
             </p>
           </Reveal>
         </div>

@@ -57,6 +57,7 @@ export interface Recommendation {
   actionText?: string;
   tag?: string;
   mapUrl?: string;
+  hideDirections?: boolean;
 }
 
 export interface ItineraryDay {
