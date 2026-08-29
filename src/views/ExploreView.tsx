@@ -59,6 +59,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
   };
 
   if (selectedRec) {
+    const isRestaurant = currentCategory?.id === 'restaurants';
     const isInHouse =
       selectedRec.distance.toLowerCase().includes('on estate') ||
       selectedRec.distance.toLowerCase().includes('in-villa') ||
@@ -86,25 +87,31 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
 
         <div className="mx-auto max-w-2xl px-4 sm:px-6 py-6 sm:py-10 pb-44 space-y-6 sm:space-y-8">
           <Reveal>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              {selectedRec.tag && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-champagne-400/40 bg-champagne-500/10 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] font-medium uppercase tracking-widest text-champagne-300">
-                  {selectedRec.tag === 'MUST SEE' && <Sparkles className="h-3 w-3 text-amber-400" />}
-                  {selectedRec.tag}
-                </span>
-              )}
-              <span className="inline-flex items-center gap-1 text-xs uppercase tracking-widest-2 text-stone-400 font-mono">
-                <Clock className="h-3.5 w-3.5 text-champagne-400/70" />
-                {selectedRec.distance}
-              </span>
-            </div>
+            {!isRestaurant && (
+              <div className="flex flex-wrap items-center gap-2 mb-2">
+                {selectedRec.tag && (
+                  <span className="inline-flex items-center gap-1 rounded-full border border-champagne-400/40 bg-champagne-500/10 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[10px] font-medium uppercase tracking-widest text-champagne-300">
+                    {selectedRec.tag === 'MUST SEE' && <Sparkles className="h-3 w-3 text-amber-400" />}
+                    {selectedRec.tag}
+                  </span>
+                )}
+                {selectedRec.distance && selectedRec.distance.toLowerCase().startsWith('approx') && (
+                  <span className="inline-flex items-center gap-1 text-xs uppercase tracking-widest-2 text-stone-400 font-mono">
+                    <Clock className="h-3.5 w-3.5 text-champagne-400/70" />
+                    {selectedRec.distance}
+                  </span>
+                )}
+              </div>
+            )}
 
             <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-light text-ivory-50 leading-tight">
               {selectedRec.name}
             </h1>
-            <p className="mt-2 sm:mt-3 font-serif text-base sm:text-lg font-light italic text-stone-300">
-              {selectedRec.note}
-            </p>
+            {!isRestaurant && selectedRec.note && (
+              <p className="mt-2 sm:mt-3 font-serif text-base sm:text-lg font-light italic text-stone-300">
+                {selectedRec.note}
+              </p>
+            )}
           </Reveal>
 
           <Reveal delay={100}>
@@ -113,14 +120,14 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                 "{selectedRec.quote}"
               </p>
 
-              {selectedRec.reservations && (
+              {!isRestaurant && selectedRec.reservations && (
                 <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/30 bg-amber-950/20 p-3.5 text-xs text-amber-200">
                   <AlertCircle className="h-4 w-4 shrink-0 text-amber-400 mt-0.5" />
                   <span>{selectedRec.reservations}</span>
                 </div>
               )}
 
-              {selectedRec.bestTimes && selectedRec.bestTimes.length > 0 && (
+              {!isRestaurant && selectedRec.bestTimes && selectedRec.bestTimes.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-ink-700/60">
                   <p className="text-[10px] uppercase tracking-widest-3 text-champagne-400 font-medium mb-2">
                     Best Times to Visit
@@ -136,7 +143,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                 </div>
               )}
 
-              {selectedRec.highlights && selectedRec.highlights.length > 0 && (
+              {!isRestaurant && selectedRec.highlights && selectedRec.highlights.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-ink-700/60">
                   <p className="text-[10px] uppercase tracking-widest-3 text-champagne-400 font-medium mb-2">
                     Available Activities
@@ -155,7 +162,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                 </div>
               )}
 
-              {selectedRec.actionText && (
+              {!isRestaurant && selectedRec.actionText && (
                 <div className="mt-4 rounded-xl border border-champagne-500/30 bg-champagne-500/10 p-4 space-y-3">
                   <p className="text-xs text-champagne-200 italic font-serif leading-relaxed">
                     {selectedRec.actionText}
@@ -172,7 +179,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                 </div>
               )}
 
-              {selectedRec.instagram && (
+              {!isRestaurant && selectedRec.instagram && (
                 <div className="pt-3 border-t border-ink-700/60 flex items-center justify-between">
                   <span className="text-xs text-stone-400 font-mono">Instagram</span>
                   <a
@@ -196,8 +203,8 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                   onClick={() => openNavigation(selectedRec)}
                   className="no-tap-highlight w-full sm:flex-1 flex min-h-[44px] items-center justify-center gap-2 rounded-xl bg-champagne-500/90 py-3.5 text-xs uppercase tracking-widest-2 font-medium text-ink-900 transition-colors hover:bg-champagne-400 active:scale-95"
                 >
-                  <MapPin className="h-4 w-4" strokeWidth={1.5} />
-                  <span>Navigate to Location</span>
+                  <Navigation className="h-4 w-4" strokeWidth={1.5} />
+                  <span>Get Directions</span>
                 </button>
               )}
               <button
@@ -217,6 +224,8 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
   }
 
   if (currentCategory) {
+    const isRestaurantCategory = currentCategory.id === 'restaurants';
+
     return (
       <div className="min-h-screen bg-ink-900 text-ivory-100">
         <NavigationModal
@@ -231,9 +240,11 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
           <Reveal>
             <p className="text-xs uppercase tracking-widest-3 text-champagne-400 font-medium">Finca Libia Curations</p>
             <h1 className="mt-1.5 font-serif text-3xl sm:text-4xl md:text-5xl font-light text-ivory-50">{currentCategory.label}</h1>
-            <p className="mt-2 text-xs font-serif italic text-stone-400 leading-relaxed">
-              {guideIntro.disclaimer}
-            </p>
+            {!isRestaurantCategory && (
+              <p className="mt-2 text-xs font-serif italic text-stone-400 leading-relaxed">
+                {guideIntro.disclaimer}
+              </p>
+            )}
           </Reveal>
           <div className="mt-8 sm:mt-10 space-y-4 sm:space-y-5">
             {currentCategory.recommendations.map((rec, i) => {
@@ -259,7 +270,50 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                           {rec.quote}
                         </p>
                       </div>
+                    ) : isRestaurantCategory ? (
+                      /* Clean Restaurant Card: Name, Short Description, Directions Button */
+                      <div className="flex flex-col gap-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-2.5 sm:gap-3">
+                            <span className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center rounded-full border border-champagne-500/30 bg-ink-900/60 font-mono text-[11px] sm:text-xs text-champagne-300 mt-0.5">
+                              {i + 1}
+                            </span>
+                            <h3
+                              onClick={() => setSelectedRec(rec)}
+                              className="cursor-pointer font-serif text-xl sm:text-2xl md:text-3xl font-light text-ivory-100 transition-colors group-hover:text-champagne-300"
+                            >
+                              {rec.name}
+                            </h3>
+                          </div>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              onClick={() => openNavigation(rec, currentCategory.label)}
+                              className="no-tap-highlight inline-flex min-h-[36px] items-center gap-1.5 rounded-lg border border-ink-600 bg-ink-900/80 px-3 py-1.5 text-[11px] sm:text-xs uppercase tracking-widest-2 text-champagne-400 transition-all hover:bg-ink-700 hover:border-champagne-400/50 active:scale-95"
+                              title="Get Directions"
+                            >
+                              <Navigation className="h-3.5 w-3.5" strokeWidth={1.5} />
+                              <span>Directions</span>
+                            </button>
+                            <button
+                              onClick={() => setSelectedRec(rec)}
+                              className="no-tap-highlight min-h-[36px] min-w-[36px] flex items-center justify-center p-2 text-stone-400 hover:text-champagne-400 transition-colors active:scale-95"
+                              title="View Full Details"
+                            >
+                              <ChevronRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
+                            </button>
+                          </div>
+                        </div>
+
+                        <p
+                          onClick={() => setSelectedRec(rec)}
+                          className="cursor-pointer text-xs sm:text-sm text-stone-300 font-serif italic leading-relaxed pl-8 sm:pl-10"
+                        >
+                          "{rec.quote}"
+                        </p>
+                      </div>
                     ) : (
+                      /* Other categories (Excursions etc.) */
                       <div className="flex flex-col gap-3 sm:gap-4">
                         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
                           <div className="flex items-start gap-2.5 sm:gap-3">
@@ -281,9 +335,11 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
                                   </span>
                                 )}
                               </div>
-                              <p className="mt-0.5 text-xs text-stone-400 font-mono">
-                                {rec.note}
-                              </p>
+                              {rec.note && (
+                                <p className="mt-0.5 text-xs text-stone-400 font-mono">
+                                  {rec.note}
+                                </p>
+                              )}
                             </div>
                           </div>
 
