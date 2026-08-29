@@ -711,7 +711,8 @@ export const exploreCategories: ExploreCategory[] = [
         note: '',
         distance: 'Provenza, Medellín',
         quote: 'A small, intimate restaurant in Provenza focused on local ingredients and creative Colombian cuisine.',
-        image: '/photos/dining_area/dining_area_02.jpeg',
+        image: '/photos/sambombi.png',
+        mapUrl: 'https://maps.app.goo.gl/wgeEBq7WdvajDqPA6',
       },
       {
         id: 'mamba-negra',
