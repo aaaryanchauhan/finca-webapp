@@ -106,8 +106,8 @@ export default function App() {
 
       {/* Bottom Navigation Bar */}
       {showBottomNav && (
-        <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-ink-700 bg-ink-900/95 backdrop-blur-lg">
-          <div className="mx-auto flex max-w-md items-center justify-around px-6 py-3 pb-5">
+        <nav className="fixed bottom-0 left-0 right-0 z-30 border-t border-ink-700/80 bg-ink-900/95 backdrop-blur-xl pb-safe">
+          <div className="mx-auto flex max-w-md items-center justify-around px-4 py-2 sm:px-6">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = view === item.id;
@@ -115,23 +115,23 @@ export default function App() {
                 <button
                   key={item.id}
                   onClick={() => setView(item.id)}
-                  className="no-tap-highlight group flex flex-col items-center gap-1 transition-all duration-300 relative py-1"
+                  className="no-tap-highlight group flex min-h-[44px] min-w-[56px] flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 active:scale-95"
                 >
                   <Icon
                     className={`h-5 w-5 transition-colors duration-300 ${
-                      isActive ? 'text-champagne-300' : 'text-stone-600 group-hover:text-stone-400'
+                      isActive ? 'text-champagne-300' : 'text-stone-500 group-hover:text-stone-400'
                     }`}
                     strokeWidth={1.5}
                   />
                   <span
                     className={`text-[10px] uppercase tracking-widest-2 transition-colors duration-300 ${
-                      isActive ? 'text-champagne-300 font-medium' : 'text-stone-600 group-hover:text-stone-400'
+                      isActive ? 'text-champagne-300 font-medium' : 'text-stone-500 group-hover:text-stone-400'
                     }`}
                   >
                     {item.label}
                   </span>
                   {isActive && (
-                    <span className="absolute -bottom-1 h-1 w-1 rounded-full bg-champagne-400 shadow-[0_0_8px_#c4b088]" />
+                    <span className="absolute bottom-0 h-1 w-1 rounded-full bg-champagne-400 shadow-[0_0_8px_#c4b088]" />
                   )}
                 </button>
               );

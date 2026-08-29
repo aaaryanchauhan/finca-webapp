@@ -50,6 +50,12 @@ export interface Recommendation {
   address?: string;
   quote: string;
   image: string;
+  instagram?: string;
+  bestTimes?: string[];
+  reservations?: string;
+  highlights?: string[];
+  actionText?: string;
+  tag?: string;
 }
 
 export interface ItineraryDay {

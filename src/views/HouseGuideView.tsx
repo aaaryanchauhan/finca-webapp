@@ -54,11 +54,11 @@ export function HouseGuideView({ onBack, onNavigate }: HouseGuideViewProps) {
               Watch step-by-step short video guides on operating all villa amenities—including fireplaces, sauna, tennis lights, steam room, barbecue, and balcony retractable roof.
             </p>
 
-            <div className="relative overflow-hidden rounded-xl border border-ink-700 aspect-video group cursor-pointer">
+            <div className="relative overflow-hidden rounded-xl border border-ink-700 group cursor-pointer">
               <img
                 src="/photos/youtube_guides.jpg"
                 alt="Finca Libia YouTube Instruction Videos"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-900/40 to-transparent" />
               <a

@@ -42,10 +42,10 @@ export function NavigationModal({ target, onClose, onRequestDriver }: Navigation
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-ink-900/90 backdrop-blur-md animate-fade-in">
-      <div className="relative w-full max-w-lg overflow-hidden rounded-lg border border-ink-700 bg-ink-800 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-ink-900/90 backdrop-blur-md animate-fade-in">
+      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl border border-ink-700/80 bg-ink-800 shadow-2xl">
         {/* Header bar */}
-        <div className="flex items-center justify-between border-b border-ink-700 px-6 py-4">
+        <div className="sticky top-0 z-10 flex items-center justify-between border-b border-ink-700 bg-ink-800/95 px-5 sm:px-6 py-3.5 sm:py-4 backdrop-blur-sm">
           <div className="flex items-center gap-2 text-champagne-400">
             <Compass className="h-5 w-5 animate-spin-slow" strokeWidth={1.5} />
             <span className="text-xs font-medium uppercase tracking-widest-2">

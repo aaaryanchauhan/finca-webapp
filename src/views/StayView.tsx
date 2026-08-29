@@ -287,17 +287,19 @@ export function StayView({ onBack }: StayViewProps) {
             </div>
           </Reveal>
 
-          <Reveal delay={200}>
-            <h3 className="font-serif text-xl font-light text-ivory-50">Suite Features</h3>
-            <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-stone-300">
-              {selectedBedroom.features.map((feat, idx) => (
-                <div key={idx} className="flex items-center gap-2 rounded-xl bg-ink-800/60 p-3 border border-ink-700">
-                  <Sparkles className="h-3.5 w-3.5 text-champagne-400 shrink-0" />
-                  <span>{feat}</span>
-                </div>
-              ))}
-            </div>
-          </Reveal>
+          {selectedBedroom.features && selectedBedroom.features.length > 0 && (
+            <Reveal delay={200}>
+              <h3 className="font-serif text-xl font-light text-ivory-50">Suite Features</h3>
+              <div className="mt-4 grid grid-cols-2 gap-3 text-xs text-stone-300">
+                {selectedBedroom.features.map((feat, idx) => (
+                  <div key={idx} className="flex items-center gap-2 rounded-xl bg-ink-800/60 p-3 border border-ink-700">
+                    <Sparkles className="h-3.5 w-3.5 text-champagne-400 shrink-0" />
+                    <span>{feat}</span>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          )}
         </div>
       </div>
     );
@@ -505,13 +507,12 @@ export function StayView({ onBack }: StayViewProps) {
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute top-2 left-2 sm:top-3 sm:left-3 rounded-full bg-ink-900/80 px-2 py-0.5 sm:px-3 sm:py-1 text-[9px] sm:text-[10px] uppercase tracking-widest-2 text-champagne-300 border border-champagne-400/30 backdrop-blur-sm">
-                      {bedroom.pdfName}
+                      {bedroom.capacity}
                     </div>
                   </div>
                   <div className="p-3.5 sm:p-5 flex-1 flex flex-col justify-between w-full">
                     <div>
-                      <span className="text-[9px] sm:text-[10px] uppercase tracking-widest-2 text-champagne-400 font-medium block">{bedroom.pdfName}</span>
-                      <h3 className="mt-1 font-serif text-base sm:text-2xl font-light text-ivory-100 transition-colors group-hover:text-champagne-300 leading-tight">
+                      <h3 className="font-serif text-base sm:text-2xl font-light text-ivory-100 transition-colors group-hover:text-champagne-300 leading-tight">
                         {bedroom.name}
                       </h3>
                       <p className="mt-1 text-[11px] sm:text-xs text-stone-400 leading-relaxed line-clamp-2">
@@ -603,32 +604,6 @@ export function StayView({ onBack }: StayViewProps) {
 
 
 
-      {/* Residents */}
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-3xl">
-          <Reveal>
-            <p className="text-xs uppercase tracking-widest-3 text-stone-500">Meet the Residents</p>
-          </Reveal>
-          <div className="mt-10 space-y-12">
-            {residents.map((resident, i) => (
-              <Reveal key={resident.id} delay={i * 100}>
-                <div className="flex flex-col sm:flex-row gap-6 items-center">
-                  <img
-                    src={resident.image}
-                    alt={resident.name}
-                    className="h-48 w-48 rounded-2xl border border-ink-700/80 shadow-xl object-cover shrink-0"
-                  />
-                  <div>
-                    <h3 className="font-serif text-3xl font-light text-ivory-100">{resident.name}</h3>
-                    <p className="text-xs uppercase tracking-widest-2 text-stone-500 mt-1">{resident.species}</p>
-                    <p className="mt-3 text-sm leading-relaxed text-stone-300">{resident.description}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

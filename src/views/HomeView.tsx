@@ -137,49 +137,51 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             </div>
           </Reveal>
 
-          {/* Learn How Everything Works */}
+          {/* Learn How Everything Works - Reworked Luxury Card */}
           <Reveal delay={250}>
-            <div className="mt-12 overflow-hidden rounded-3xl border border-ink-700 bg-ink-800/40 p-6 sm:p-8 backdrop-blur-md transition-all duration-300 hover:border-champagne-500/30 space-y-5">
-              <div className="flex items-center gap-3 text-champagne-400">
-                <Video className="h-6 w-6" strokeWidth={1.5} />
-                <h2 className="font-serif text-2xl font-light text-ivory-50">Learn How Everything Works</h2>
+            <div className="mt-12 overflow-hidden rounded-3xl border border-champagne-400/35 bg-gradient-to-br from-ink-800/90 via-ink-800/70 to-champagne-950/20 p-7 sm:p-9 backdrop-blur-md shadow-2xl transition-all duration-300 hover:border-champagne-400/60 gold-border-glow">
+              <div className="flex items-center gap-2 text-champagne-400">
+                <Video className="h-4 w-4" strokeWidth={1.5} />
+                <span className="text-[10px] uppercase tracking-widest-3 font-medium">Video Guides</span>
               </div>
-              <p className="text-sm leading-relaxed text-stone-300">
-                We’ve prepared simple video guides to help you use the property’s facilities. You’ll find instructions for things such as:
+
+              <h2 className="mt-4 font-serif text-3xl sm:text-4xl font-light text-ivory-50 leading-tight">
+                Learn How Everything Works
+              </h2>
+              <p className="mt-2 text-sm sm:text-base text-stone-300 font-serif italic leading-relaxed">
+                Step-by-step video walk-throughs to help you operate the estate’s facilities with ease.
               </p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 text-xs text-stone-300">
-                {[
-                  'Garage doors',
-                  'Steam bath',
-                  'Tennis court lights',
-                  'Music systems',
-                  'Fireplaces',
-                  'Other property amenities',
-                ].map((item) => (
-                  <div key={item} className="flex items-center gap-2 rounded-lg bg-ink-900/60 p-2.5 border border-ink-700/60">
-                    <Check className="h-3.5 w-3.5 text-champagne-400 shrink-0" strokeWidth={2} />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-                <button
-                  onClick={() => onNavigate('guide')}
-                  className="no-tap-highlight inline-flex items-center justify-center gap-2 rounded-full border border-champagne-400/40 bg-champagne-500/10 px-5 py-3 text-xs font-medium uppercase tracking-widest-2 text-champagne-300 transition-colors hover:bg-champagne-500 hover:text-ink-900"
-                >
-                  <span>View Instruction Guide</span>
-                  <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-                </button>
+              <div className="mt-6 relative overflow-hidden rounded-2xl border border-ink-700/80 group cursor-pointer">
+                <img
+                  src="/photos/youtube_guides.jpg"
+                  alt="Finca Libia YouTube Shorts Instruction Videos"
+                  className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-900/30 to-transparent" />
                 <a
                   href={property.youtubeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="no-tap-highlight inline-flex items-center justify-center gap-2 rounded-full bg-red-600/90 px-5 py-3 text-xs font-medium uppercase tracking-widest-2 text-white transition-all hover:bg-red-500"
+                  className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center"
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-red-600 text-white shadow-2xl transition-transform group-hover:scale-110 border border-white/20">
+                    <Video className="h-6 w-6" strokeWidth={1.5} />
+                  </div>
+                  <p className="mt-3 font-serif text-xl font-light text-ivory-50 hero-text-shadow">Watch All Instruction Videos</p>
+                  <p className="text-xs text-red-400 font-mono uppercase tracking-wider mt-1 font-medium">youtube.com/@fincalibia</p>
+                </a>
+              </div>
+
+              <div className="mt-6 pt-2 border-t border-ink-700/60">
+                <a
+                  href={property.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="no-tap-highlight flex w-full items-center justify-center gap-2.5 rounded-full border border-red-500/40 bg-red-950/40 px-6 py-3.5 text-xs font-medium uppercase tracking-widest-2 text-red-400 backdrop-blur-sm transition-all duration-300 hover:bg-red-600 hover:text-white hover:border-red-500 shadow-lg"
                 >
                   <Video className="h-4 w-4" strokeWidth={1.5} />
-                  <span>Watch on YouTube (@fincalibia)</span>
+                  <span>Watch on YouTube</span>
                 </a>
               </div>
             </div>
