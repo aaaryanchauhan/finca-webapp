@@ -3,12 +3,17 @@ import { ChevronRight, ArrowRight, Phone, Sparkles, Video, Check } from 'lucide-
 import { property } from '@/data/content';
 import { FullScreenImage } from '@/components/FullScreenImage';
 import { Reveal } from '@/components/Reveal';
+import { Download } from 'lucide-react';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { InstallAppModal } from '@/components/InstallAppModal';
 
 interface HomeViewProps {
   onNavigate: (view: string) => void;
 }
 
 export function HomeView({ onNavigate }: HomeViewProps) {
+  const { deferredPrompt, isIOS, isStandalone, promptInstall } = usePWAInstall();
+  const [showInstallModal, setShowInstallModal] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const heroImagePairs = [
     { mobile: property.heroImage, desktop: property.heroImageDesktop },
@@ -187,6 +192,37 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             </div>
           </Reveal>
 
+          {/* Install App Banner */}
+          {!isStandalone && (isIOS || deferredPrompt) && (
+            <Reveal delay={275}>
+              <div className="mt-8 overflow-hidden rounded-3xl border border-champagne-400/20 bg-ink-800/40 p-6 backdrop-blur-md transition-all duration-300 hover:border-champagne-400/40">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-ink-900 border border-ink-700 text-champagne-400 shadow-inner">
+                      <Download className="h-6 w-6" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-xl font-light text-ivory-50">Add to Home Screen</h3>
+                      <p className="text-xs text-stone-400 mt-1">Get quick access and a full-screen experience.</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      if (deferredPrompt) {
+                        promptInstall();
+                      } else {
+                        setShowInstallModal(true);
+                      }
+                    }}
+                    className="no-tap-highlight w-full sm:w-auto rounded-full bg-ivory-50 px-6 py-2.5 text-xs font-medium uppercase tracking-widest-2 text-ink-900 shadow-md transition-colors hover:bg-champagne-100 active:scale-95 whitespace-nowrap"
+                  >
+                    Install App
+                  </button>
+                </div>
+              </div>
+            </Reveal>
+          )}
+
           {/* Quick section links */}
           <Reveal delay={300}>
             <div className="mt-16 space-y-px">
@@ -221,6 +257,8 @@ export function HomeView({ onNavigate }: HomeViewProps) {
           </Reveal>
         </div>
       </section>
+
+      {showInstallModal && <InstallAppModal onClose={() => setShowInstallModal(false)} />}
     </div>
   );
 }

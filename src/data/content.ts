@@ -36,10 +36,10 @@ export const property = {
     { id: 18, title: '#18 Farm Animals' },
     { id: 19, title: '#19 Feeding Alpacas' },
   ],
-  hostName: 'Meyer Ohayon',
+  hostName: 'Meyer',
   hostPhone: '+507 6674-8386',
   host: {
-    name: 'Meyer Ohayon',
+    name: 'Meyer',
     title: 'Your Host & Estate Curator',
     phone: '+507 6674-8386',
     image: '/photos/WhatsApp Image 2026-08-19 at 20.54.31.jpeg',
@@ -587,7 +587,7 @@ export const propertyStory: PropertyStorySection[] = [
     id: 'history',
     label: 'History',
     title: 'A century in the valley',
-    body: 'Finca Libia was built in 1928 as a coffee plantation estate. The original stone walls still stand — hand-cut from the hillside behind the property. For three generations, the estate produced some of the finest coffee in Antioquia. In 2019, host Meyer Ohayon restored the property as a private retreat, preserving its character while adding modern luxury amenities.',
+    body: 'Finca Libia was built in 1928 as a coffee plantation estate. The original stone walls still stand — hand-cut from the hillside behind the property. For three generations, the estate produced some of the finest coffee in Antioquia. In 2019, host Meyer restored the property as a private retreat, preserving its character while adding modern luxury amenities.',
     image: '/photos/exterior/exterior_03.jpeg',
   },
   {
