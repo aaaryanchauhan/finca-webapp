@@ -10,6 +10,9 @@ import { PreArrivalView } from '@/views/PreArrivalView';
 import { CheckoutView } from '@/views/CheckoutView';
 import { HouseGuideView } from '@/views/HouseGuideView';
 import { property } from '@/data/content';
+import { Download } from 'lucide-react';
+import { usePWAInstall } from '@/hooks/usePWAInstall';
+import { InstallAppModal } from '@/components/InstallAppModal';
 
 type View = 'home' | 'stay' | 'explore' | 'concierge' | 'memories' | 'itinerary' | 'pre-arrival' | 'checkout' | 'guide';
 
@@ -23,6 +26,8 @@ const navItems: { id: View; label: string; icon: typeof Home }[] = [
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [scrollY, setScrollY] = useState(0);
+  const { deferredPrompt, isIOS, isStandalone, promptInstall } = usePWAInstall();
+  const [showInstallModal, setShowInstallModal] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -59,7 +64,7 @@ export default function App() {
       {/* Top bar — pre-arrival & checkout buttons */}
       {view === 'home' && (
         <header
-          className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 py-4 transition-opacity duration-300"
+          className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 pb-4 transition-opacity duration-300 pt-[calc(env(safe-area-inset-top)+1rem)]"
           style={{ opacity: Math.max(0, 1 - scrollY / 200) }}
         >
           <div className="flex items-center gap-2.5">
@@ -136,9 +141,33 @@ export default function App() {
                 </button>
               );
             })}
+            
+            {/* Install Button in Footer */}
+            {!isStandalone && (isIOS || deferredPrompt) && (
+              <button
+                onClick={() => {
+                  if (deferredPrompt) {
+                    promptInstall();
+                  } else {
+                    setShowInstallModal(true);
+                  }
+                }}
+                className="no-tap-highlight group flex min-h-[44px] min-w-[56px] flex-col items-center justify-center gap-1 transition-all duration-300 relative py-1 active:scale-95"
+              >
+                <Download
+                  className="h-5 w-5 text-stone-500 group-hover:text-stone-400 transition-colors duration-300"
+                  strokeWidth={1.5}
+                />
+                <span className="text-[10px] uppercase tracking-widest-2 text-stone-500 group-hover:text-stone-400 transition-colors duration-300">
+                  Install
+                </span>
+              </button>
+            )}
           </div>
         </nav>
       )}
+
+      {showInstallModal && <InstallAppModal onClose={() => setShowInstallModal(false)} />}
     </div>
   );
 }
