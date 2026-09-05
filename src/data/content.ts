@@ -340,7 +340,6 @@ export const amenityCategories: AmenityCategory[] = [
       { name: 'Tennis court & Pickleball', detail: 'Red clay court with night floodlights' },
       { name: 'Half Basketball Court', detail: 'Outdoor half-court basketball setup' },
       { name: 'Outdoor Children Activities', detail: 'Play structures & outdoor activities for children' },
-      { name: 'Private Cinema & TV', detail: 'Soundproofed theater room' },
       { name: 'Denon sound system', detail: 'Bluetooth & aux high-fidelity audio' },
       { name: 'Record player & Vinyl collection', detail: 'Analog listening lounge' },
       { name: 'Exercise equipment', detail: 'Free weights, stationary bike, treadmill, yoga mat, workout bench' },
