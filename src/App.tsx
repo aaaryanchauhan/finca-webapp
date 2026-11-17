@@ -26,6 +26,7 @@ const navItems: { id: View; label: string; icon: typeof Home }[] = [
 export default function App() {
   const [view, setView] = useState<View>('home');
   const [scrollY, setScrollY] = useState(0);
+  const [openTourOnStay, setOpenTourOnStay] = useState(false);
   const { deferredPrompt, isIOS, isStandalone, promptInstall } = usePWAInstall();
   const [showInstallModal, setShowInstallModal] = useState(false);
 
@@ -50,7 +51,13 @@ export default function App() {
   }, [view]);
 
   const navigate = (v: string) => {
-    setView(v as View);
+    // 'stay-tour' opens the Stay page straight into the photo tour.
+    if (v === 'stay-tour') {
+      setOpenTourOnStay(true);
+      setView('stay');
+    } else {
+      setView(v as View);
+    }
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
@@ -61,44 +68,52 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-ink-900 text-ivory-100">
-      {/* Top bar — pre-arrival & checkout buttons */}
+      {/* Top bar: shown over the home hero, fades out as you scroll */}
       {view === 'home' && (
         <header
-          className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-5 pb-4 transition-opacity duration-300 pt-[calc(env(safe-area-inset-top)+1rem)]"
+          className={`fixed left-0 right-0 top-0 z-40 px-5 pb-3 pt-[calc(env(safe-area-inset-top)+0.75rem)] ${
+            scrollY > 160 ? 'pointer-events-none' : ''
+          }`}
           style={{ opacity: Math.max(0, 1 - scrollY / 200) }}
         >
+          <div className="hero-in flex items-center justify-between" style={{ ['--i' as string]: 0 }}>
           <div className="flex items-center gap-2.5">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full border border-champagne-400/40 bg-ink-900/80 font-serif text-xs font-light tracking-widest text-champagne-300 backdrop-blur-md shadow-md">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full border border-champagne-400/50 font-serif text-xs tracking-widest text-champagne-300">
               FL
             </span>
-            <span className="font-serif text-sm sm:text-base font-medium tracking-widest-2 text-ivory-100 drop-shadow-md">
+            <span className="whitespace-nowrap font-serif text-sm font-medium tracking-widest-2 text-ivory-100 sm:text-base">
               FINCA LIBIA
             </span>
           </div>
-          <div className="flex flex-col items-end gap-1.5">
+          <div className="flex items-center">
             <button
               onClick={() => setView('pre-arrival')}
-              className="no-tap-highlight group flex shrink-0 items-center gap-1.5 rounded-full border border-ivory-200/30 bg-ink-900/60 px-3 py-1 sm:px-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-wider text-ivory-100 whitespace-nowrap backdrop-blur-md shadow-md transition-all duration-300 hover:border-champagne-400 hover:bg-champagne-500 hover:text-ink-900 active:scale-95"
+              className="no-tap-highlight flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 px-2.5 text-[11px] font-medium uppercase tracking-widest-2 text-ivory-100 transition-colors hover:text-champagne-300"
               aria-label="Pre-arrival"
+              title="Pre-arrival"
             >
-              <Calendar className="h-3.5 w-3.5 shrink-0 text-champagne-400 transition-colors group-hover:text-ink-900" strokeWidth={1.5} />
-              <span>Pre-Arrival</span>
+              <Calendar className="h-4 w-4 shrink-0 text-champagne-400" strokeWidth={1.5} />
+              <span className="hidden whitespace-nowrap min-[520px]:inline">Pre-arrival</span>
             </button>
             <button
               onClick={() => setView('checkout')}
-              className="no-tap-highlight group flex shrink-0 items-center gap-1.5 rounded-full border border-ivory-200/30 bg-ink-900/60 px-3 py-1 sm:px-3.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-wider text-ivory-100 whitespace-nowrap backdrop-blur-md shadow-md transition-all duration-300 hover:border-champagne-400 hover:bg-champagne-500 hover:text-ink-900 active:scale-95"
+              className="no-tap-highlight flex min-h-[44px] min-w-[44px] items-center justify-center gap-1.5 px-2.5 text-[11px] font-medium uppercase tracking-widest-2 text-ivory-100 transition-colors hover:text-champagne-300"
               aria-label="Checkout"
+              title="Checkout"
             >
-              <LogOut className="h-3.5 w-3.5 shrink-0 text-champagne-400 transition-colors group-hover:text-ink-900" strokeWidth={1.5} />
-              <span>Checkout</span>
+              <LogOut className="h-4 w-4 shrink-0 text-champagne-400" strokeWidth={1.5} />
+              <span className="hidden whitespace-nowrap min-[520px]:inline">Checkout</span>
             </button>
+          </div>
           </div>
         </header>
       )}
 
       {/* Views */}
       {view === 'home' && <HomeView onNavigate={navigate} />}
-      {view === 'stay' && <StayView onBack={goHome} />}
+      {view === 'stay' && (
+        <StayView onBack={goHome} autoOpenTour={openTourOnStay} onTourOpened={() => setOpenTourOnStay(false)} />
+      )}
       {view === 'explore' && <ExploreView onBack={goHome} onNavigate={navigate} />}
       {view === 'concierge' && <ConciergeView onBack={goHome} />}
       {view === 'memories' && <MemoriesView onBack={goHome} />}

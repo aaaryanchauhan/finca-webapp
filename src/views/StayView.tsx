@@ -1,198 +1,44 @@
-import { useState, useEffect, useCallback } from 'react';
-import { ChevronRight, ArrowRight, ArrowLeft, MapPin, Clock, Lightbulb, X, Bed, Users, Sparkles, Play, Pause, Compass, Check } from 'lucide-react';
-import { amenities, amenityCategories, bedrooms, propertyStory, residents, tourStops } from '@/data/content';
+import { useState, useEffect } from 'react';
+import { ChevronDown, ChevronRight, ArrowRight, ArrowLeft, MapPin, Clock, Lightbulb, X, Bed, Users, Sparkles, Check } from 'lucide-react';
+import { amenities, amenityCategories, bedrooms, propertyStory, residents, collageChapters } from '@/data/content';
 import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
+import { EstateCollage } from '@/components/EstateCollage';
 import type { Amenity, Bedroom } from '@/types';
 
 interface StayViewProps {
   onBack: () => void;
+  /** Open straight into the photo tour (e.g. from the home page link). */
+  autoOpenTour?: boolean;
+  onTourOpened?: () => void;
 }
 
-export function StayView({ onBack }: StayViewProps) {
+export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayViewProps) {
   const [selectedAmenity, setSelectedAmenity] = useState<Amenity | null>(null);
   const [selectedBedroom, setSelectedBedroom] = useState<Bedroom | null>(null);
   const [activePhotoIdx, setActivePhotoIdx] = useState<number>(0);
-  const [tourIndex, setTourIndex] = useState<number | null>(null);
-  const [isAutoplay, setIsAutoplay] = useState<boolean>(true);
+  const [tourOpen, setTourOpen] = useState<boolean>(autoOpenTour);
+
+  useEffect(() => {
+    if (autoOpenTour) onTourOpened?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const [tourChapter, setTourChapter] = useState<string | undefined>(undefined);
+
+  const openTour = (chapterId?: string) => {
+    setTourChapter(chapterId);
+    setTourOpen(true);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
-  }, [selectedAmenity, selectedBedroom, tourIndex]);
+  }, [selectedAmenity, selectedBedroom, tourOpen]);
 
-  // Autoplay timer effect for Digital Tour
-  useEffect(() => {
-    let timer: ReturnType<typeof setInterval>;
-    if (tourIndex !== null && isAutoplay) {
-      timer = setInterval(() => {
-        setTourIndex((prev) => {
-          if (prev === null) return null;
-          return (prev + 1) % tourStops.length;
-        });
-      }, 5500);
-    }
-    return () => clearInterval(timer);
-  }, [tourIndex, isAutoplay]);
-
-  // Keyboard navigation & spacebar autoplay toggle
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (tourIndex === null) return;
-      if (e.key === 'ArrowRight') {
-        setTourIndex((prev) => (prev !== null ? (prev + 1) % tourStops.length : null));
-      } else if (e.key === 'ArrowLeft') {
-        setTourIndex((prev) => (prev !== null ? (prev - 1 + tourStops.length) % tourStops.length : null));
-      } else if (e.key === 'Escape') {
-        setTourIndex(null);
-      } else if (e.key === ' ') {
-        e.preventDefault();
-        setIsAutoplay((prev) => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [tourIndex]);
-
-  // Digital Tour Overlay Mode
-  if (tourIndex !== null) {
-    const currentStop = tourStops[tourIndex];
-
-    return (
-      <div className="fixed inset-0 z-50 flex flex-col justify-between bg-ink-950/98 backdrop-blur-2xl animate-fade-in text-ivory-100 overflow-hidden select-none">
-        {/* Top Segmented Progress Bar */}
-        <div className="absolute top-0 left-0 right-0 z-40 flex gap-1 p-1.5 bg-ink-950/60 backdrop-blur-xs">
-          {tourStops.map((stop, idx) => (
-            <button
-              key={stop.id}
-              onClick={() => setTourIndex(idx)}
-              className="h-1 flex-1 rounded-full overflow-hidden bg-ivory-200/20 transition-all duration-300 relative group"
-              title={`Stop ${stop.number}: ${stop.title}`}
-            >
-              <div
-                className={`h-full transition-all ${
-                  idx === tourIndex
-                    ? 'bg-champagne-400 w-full'
-                    : idx < tourIndex
-                    ? 'bg-ivory-200/80 w-full'
-                    : 'w-0'
-                }`}
-              />
-            </button>
-          ))}
-        </div>
-
-        {/* Smooth Background Image Cross-fade */}
-        {tourStops.map((stop, idx) => (
-          <div
-            key={stop.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out pointer-events-none ${
-              idx === tourIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={stop.image}
-              alt={stop.title}
-              className="h-full w-full object-cover animate-slow-zoom brightness-90"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-900/60 to-ink-950/90" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(26,24,22,0.4)_0%,_rgba(26,24,22,0.85)_100%)]" />
-          </div>
-        ))}
-
-        {/* Header Bar */}
-        <header className="relative z-30 flex items-center justify-between p-6 pt-8 lg:px-12 border-b border-ink-700/60 bg-ink-950/60 backdrop-blur-md">
-          <BackButton onClick={() => setTourIndex(null)} label="Exit Tour" />
-
-          <div className="hidden sm:flex items-center gap-3 bg-ink-900/80 border border-ink-700/80 px-5 py-2 backdrop-blur-md rounded-full shadow-lg">
-            <Compass className="h-4 w-4 text-champagne-400 animate-spin-slow" />
-            <span className="font-serif text-sm font-light text-ivory-50 tracking-wider">
-              FINCA LIBIA DIGITAL TOUR
-            </span>
-          </div>
-
-          <button
-            onClick={() => setIsAutoplay(!isAutoplay)}
-            className={`no-tap-highlight flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium uppercase tracking-widest backdrop-blur-md transition-all shadow-xl ${
-              isAutoplay
-                ? 'border-champagne-400 bg-champagne-500 text-ink-900 font-semibold'
-                : 'border-ivory-200/20 bg-ink-900/70 text-ivory-100 hover:border-champagne-400 hover:text-champagne-300'
-            }`}
-          >
-            {isAutoplay ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5 fill-current" />}
-            <span>{isAutoplay ? 'Autoplay ON' : 'Autoplay OFF'}</span>
-          </button>
-        </header>
-
-        {/* Bottom Typography Showcase */}
-        <div className="relative z-20 mx-auto max-w-3xl px-6 text-center mt-auto mb-4 space-y-2">
-          <span className="text-[11px] uppercase tracking-widest-3 text-champagne-400 font-medium block">
-            {currentStop.category}
-          </span>
-
-          <h2 className="font-serif text-3xl sm:text-5xl font-light text-ivory-50 hero-text-shadow leading-tight">
-            {currentStop.title}
-          </h2>
-
-          <p className="font-serif text-base sm:text-lg font-light italic text-ivory-100/90 hero-text-shadow max-w-2xl mx-auto leading-relaxed">
-            {currentStop.description}
-          </p>
-        </div>
-
-        {/* Interactive Bottom Control Strip & Thumbnail Carousel */}
-        <footer className="relative z-30 border-t border-ink-700/80 bg-ink-950/90 backdrop-blur-xl p-6 lg:px-12 space-y-4">
-          <div className="flex items-center justify-between max-w-7xl mx-auto">
-            <button
-              onClick={() => setTourIndex((prev) => (prev !== null ? (prev - 1 + tourStops.length) % tourStops.length : 0))}
-              className="no-tap-highlight inline-flex items-center gap-2 text-xs uppercase tracking-widest text-ivory-200 transition-colors hover:text-champagne-300"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span>Previous Stop</span>
-            </button>
-
-            <span className="font-mono text-xs text-stone-400 tracking-widest">
-              {tourIndex + 1} / {tourStops.length}
-            </span>
-
-            <button
-              onClick={() => setTourIndex((prev) => (prev !== null ? (prev + 1) % tourStops.length : 0))}
-              className="no-tap-highlight inline-flex items-center gap-2 text-xs uppercase tracking-widest text-champagne-300 transition-colors hover:text-champagne-200"
-            >
-              <span>Next Stop</span>
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-
-          {/* Thumbnail Selector Strip */}
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none max-w-7xl mx-auto pt-2 border-t border-ink-800/60">
-            {tourStops.map((stop, idx) => (
-              <button
-                key={stop.id}
-                onClick={() => setTourIndex(idx)}
-                className={`group flex items-center gap-2 shrink-0 p-1.5 rounded-lg border transition-all duration-300 text-left ${
-                  idx === tourIndex
-                    ? 'border-champagne-400 bg-ink-800/90 shadow-lg scale-105'
-                    : 'border-ink-700/50 bg-ink-900/50 opacity-60 hover:opacity-100 hover:border-ink-600'
-                }`}
-              >
-                <div className="h-10 w-14 overflow-hidden rounded bg-ink-800 shrink-0">
-                  <img src={stop.image} alt={stop.title} className="h-full w-full object-cover" />
-                </div>
-                <div className="pr-2">
-                  <span className="block text-[10px] text-champagne-400 font-mono">
-                    #{stop.number}
-                  </span>
-                  <span className="block text-xs font-serif text-ivory-100 max-w-[120px] truncate">
-                    {stop.title}
-                  </span>
-                </div>
-              </button>
-            ))}
-          </div>
-        </footer>
-      </div>
-    );
+  // Estate collage (visual tour)
+  if (tourOpen) {
+    return <EstateCollage onClose={() => setTourOpen(false)} startChapterId={tourChapter} />;
   }
 
   // Bedroom Modal Detail View
@@ -413,15 +259,12 @@ export function StayView({ onBack }: StayViewProps) {
 
           <Reveal delay={250}>
             <button
-              onClick={() => {
-                const tourStartIdx = tourStops.findIndex(
-                  (s) => s.title.toLowerCase().includes(selectedAmenity.id) || s.id === selectedAmenity.id
-                );
-                setTourIndex(tourStartIdx >= 0 ? tourStartIdx : 0);
-              }}
+              onClick={() =>
+                openTour(collageChapters.find((c) => c.amenityIds?.includes(selectedAmenity.id))?.id)
+              }
               className="no-tap-highlight group mt-10 inline-flex items-center gap-2 text-champagne-400 transition-colors hover:text-champagne-300"
             >
-              <span className="text-sm tracking-wide">Start tour from here</span>
+              <span className="text-sm tracking-wide">See it in the collage</span>
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
             </button>
           </Reveal>
@@ -452,31 +295,51 @@ export function StayView({ onBack }: StayViewProps) {
         </div>
       </section>
 
-      {/* Digital Tour Banner */}
-      <section className="px-6 py-8">
+      {/* Estate collage teaser: a light, full-bleed panel so it breaks from the dark page */}
+      <section className="bg-ivory-100 px-6 py-14 sm:py-20">
         <div className="mx-auto max-w-3xl">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl border border-champagne-400/35 bg-gradient-to-br from-ink-800/90 via-ink-800/70 to-champagne-950/25 p-7 sm:p-8 backdrop-blur-md shadow-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 gold-border-glow">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="flex h-2 w-2 rounded-full bg-champagne-400 animate-pulse" />
-                  <p className="text-[10px] uppercase tracking-widest-3 text-champagne-400 font-medium">Digital Estate Tour</p>
+            <button
+              type="button"
+              onClick={() => openTour()}
+              className="no-tap-highlight group block w-full text-left"
+              aria-label="Open the photo tour of the estate"
+            >
+              <div className="grid aspect-[16/10] grid-cols-3 grid-rows-2 gap-2 overflow-hidden">
+                <div className="col-span-2 row-span-2 overflow-hidden">
+                  <img
+                    src="/photos/exterior/exterior_10.jpeg"
+                    alt=""
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
                 </div>
-                <p className="font-serif text-2xl font-light text-ivory-50 mt-1.5 hero-text-shadow">
-                  Take an interactive tour of the property.
-                </p>
-                <p className="text-xs text-stone-300 mt-1 font-serif italic">
-                  Guided 360-degree walkthrough of all 18 estate chapters & amenities.
-                </p>
+                <div className="overflow-hidden">
+                  <img
+                    src="/photos/pool/pool_01.jpeg"
+                    alt=""
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
+                </div>
+                <div className="overflow-hidden">
+                  <img
+                    src="/photos/dining_area/dining_area_01.jpeg"
+                    alt=""
+                    className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
+                  />
+                </div>
               </div>
-              <button
-                onClick={() => setTourIndex(0)}
-                className="no-tap-highlight group flex items-center gap-2.5 rounded-full bg-champagne-500/90 px-6 py-3 text-xs uppercase tracking-widest-2 font-medium text-ink-900 transition-all duration-300 hover:bg-champagne-400 hover:shadow-lg hover:shadow-champagne-500/20 active:scale-95 shrink-0"
-              >
-                <span>Start the tour</span>
+
+              <h2 className="mt-9 font-serif text-5xl font-light leading-[1.02] tracking-tight text-ink-900 sm:text-6xl">
+                The estate, <em className="font-normal italic text-champagne-600">in photographs.</em>
+              </h2>
+              <p className="mt-4 max-w-[44ch] font-serif text-xl italic leading-relaxed text-ink-600">
+                A walk through the house, the grounds, and the company you will keep.
+              </p>
+              <span className="mt-8 inline-flex min-h-[52px] items-center gap-3 rounded-full bg-ink-900 px-8 py-4 text-xs font-medium uppercase tracking-widest-2 text-ivory-50 transition-all duration-300 group-hover:bg-ink-700 group-active:scale-95">
+                <span>Open the photo tour</span>
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.5} />
-              </button>
-            </div>
+              </span>
+            </button>
           </Reveal>
         </div>
       </section>
@@ -560,44 +423,46 @@ export function StayView({ onBack }: StayViewProps) {
           </div>
 
           {/* Complete Categorized Amenities Breakdown */}
-          <div className="mt-20 pt-12 border-t border-ink-700/80">
+          <div className="mt-20 border-t border-ink-700/80 pt-14">
             <Reveal>
-              <div className="flex items-center gap-2 text-champagne-400">
-                <Sparkles className="h-4 w-4" strokeWidth={1.5} />
-                <span className="text-[10px] uppercase tracking-widest-3 font-medium">Amenities</span>
-              </div>
-              <h2 className="mt-2 font-serif text-3xl sm:text-4xl font-light text-ivory-50">
-                What This Place Offers
+              <h2 className="font-serif text-4xl font-light leading-tight text-ivory-50 sm:text-5xl">
+                What this place offers.
               </h2>
-              <p className="mt-2 text-sm text-stone-400 leading-relaxed font-serif italic">
-                Every luxury, convenience, and entertainment feature included with your stay at Finca Libia.
+              <p className="mt-3 max-w-[48ch] font-serif text-lg italic text-stone-300">
+                Every convenience and entertainment feature included with your stay, by room and by season.
               </p>
             </Reveal>
 
-            <div className="mt-10 grid grid-cols-1 gap-6">
-              {amenityCategories.map((cat, i) => (
-                <Reveal key={cat.id} delay={i * 40}>
-                  <div className="rounded-2xl border border-ink-700/80 bg-ink-900/60 p-6 backdrop-blur-md space-y-4 hover:border-champagne-500/30 transition-all">
-                    <h3 className="font-serif text-xl font-light text-ivory-100 border-b border-ink-700/60 pb-3">
-                      {cat.title}
-                    </h3>
-                    <ul className="space-y-3">
-                      {cat.items.map((item, idx) => (
-                        <li key={idx} className="flex items-start gap-2.5 text-xs">
-                          <Check className="h-4 w-4 text-champagne-400 shrink-0 mt-0.5" strokeWidth={2} />
-                          <div>
-                            <p className="text-ivory-100 font-medium">{item.name}</p>
-                            {item.detail && (
-                              <p className="text-[11px] text-stone-400 leading-normal mt-0.5">{item.detail}</p>
-                            )}
-                          </div>
+            <Reveal>
+              <div className="mt-10 divide-y divide-ink-700/70 border-y border-ink-700/70">
+                {amenityCategories.map((cat, i) => (
+                  <details key={cat.id} className="group" open={i === 0}>
+                    <summary className="no-tap-highlight flex min-h-[68px] cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
+                      <span className="font-serif text-2xl font-light text-ivory-100 transition-colors group-open:text-champagne-300 group-hover:text-champagne-300">
+                        {cat.title}
+                      </span>
+                      <span className="flex shrink-0 items-center gap-3 text-sm text-stone-400">
+                        <span aria-label={`${cat.items.length} items`}>{cat.items.length}</span>
+                        <ChevronDown
+                          className="h-5 w-5 transition-transform duration-300 group-open:rotate-180"
+                          strokeWidth={1.5}
+                        />
+                      </span>
+                    </summary>
+                    <ul className="pb-6 sm:columns-2 sm:gap-x-12">
+                      {cat.items.map((item) => (
+                        <li key={item.name} className="break-inside-avoid border-t border-ink-700/40 py-3.5 first:border-t-0">
+                          <p className="text-[15px] leading-snug text-ivory-100">{item.name}</p>
+                          {item.detail && (
+                            <p className="mt-1 text-[13px] leading-snug text-stone-400">{item.detail}</p>
+                          )}
                         </li>
                       ))}
                     </ul>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+                  </details>
+                ))}
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>

@@ -94,14 +94,51 @@ export interface PropertyStorySection {
   image: string;
 }
 
-export interface TourStop {
-  id: string;
-  number: string;
+export interface CollagePlacement {
+  /** CSS grid-column value, e.g. "2 / span 6" */
+  col: string;
+  /** CSS grid-row value, e.g. "1 / span 4" */
+  row: string;
+}
+
+export interface CollageMobile {
+  /** Columns taken on the two-column phone grid. */
+  span: 1 | 2;
+  /** CSS aspect-ratio for photos on phones, e.g. "4 / 3". */
+  ar?: string;
+}
+
+interface CollageItemBase {
+  /** Desktop placement on the 12-column board. Tiles never overlap. */
+  d: CollagePlacement;
+  /** Phone layout. */
+  m: CollageMobile;
+}
+
+export interface CollagePhoto extends CollageItemBase {
+  kind: 'photo';
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export interface CollageText extends CollageItemBase {
+  kind: 'text';
   title: string;
-  category: string;
-  description: string;
-  image: string;
-  details?: string;
+  /** Second clause, set in champagne italics. */
+  em?: string;
+  body?: string;
+  size?: 'md' | 'lg' | 'xl';
+}
+
+export type CollageItem = CollagePhoto | CollageText;
+
+export interface CollageChapter {
+  id: string;
+  name: string;
+  /** Amenity ids that should open the tour at this chapter. */
+  amenityIds?: string[];
+  items: CollageItem[];
 }
 
 export interface MemoryEntry {

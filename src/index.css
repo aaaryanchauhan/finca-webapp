@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +11,7 @@
 
   body {
     margin: 0;
-    background-color: #12100e;
+    background-color: #1a1816;
     color: #f9f6ef;
     font-family: 'Inter', system-ui, sans-serif;
     overflow-x: hidden;
@@ -92,10 +90,10 @@
       transparent 70%
     );
     transform: rotate(30deg);
-    animation: shimmer 4s infinite linear;
+    animation: badgeSweep 4s infinite linear;
   }
 
-  @keyframes shimmer {
+  @keyframes badgeSweep {
     0% { transform: translateX(-100%) rotate(30deg); }
     100% { transform: translateX(100%) rotate(30deg); }
   }
@@ -132,5 +130,204 @@
   .h-screen-safe {
     height: 100vh;
     height: 100dvh;
+  }
+}
+
+/* ───────────────────────── Estate collage (visual tour) ───────────────────────── */
+@layer components {
+  .cl-scroller {
+    overscroll-behavior: contain;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cl-header {
+    background: linear-gradient(to bottom, rgba(26, 24, 22, 0.88) 0%, rgba(26, 24, 22, 0) 100%);
+  }
+
+  .cl-progress {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    z-index: 40;
+    background: #c4b088;
+    transform-origin: left;
+    transform: scaleX(var(--sp, 0));
+  }
+
+  .cl-chapter {
+    padding-bottom: clamp(2rem, 6vw, 4.5rem);
+  }
+
+  /* Phones: two columns, photos keep their own aspect ratio. */
+  .cl-grid {
+    --gap: 0.5rem;
+    --board: min(100vw - 2rem, 72rem);
+    width: var(--board);
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  .cl-item {
+    grid-column: span var(--span, 2);
+    min-width: 0;
+  }
+  .cl-fig {
+    margin: 0;
+    aspect-ratio: var(--ar, 4 / 3);
+  }
+
+  /* Desktop: a 12-column board. Tiles are placed explicitly and never overlap. */
+  @media (min-width: 768px) {
+    .cl-grid {
+      --gap: 0.75rem;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: calc((var(--board) - 11 * var(--gap)) / 12);
+    }
+    .cl-item {
+      grid-column: var(--dc);
+      grid-row: var(--dr);
+    }
+    .cl-fig {
+      aspect-ratio: auto;
+    }
+  }
+
+  /* Photographs */
+  .cl-photo {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+    cursor: zoom-in;
+    background: #26231f;
+    border: 0;
+  }
+  .cl-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    user-select: none;
+    transition: transform 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .cl-photo:hover img {
+    transform: scale(1.04) !important;
+  }
+  .cl-photo:focus-visible {
+    outline: 1px solid #d4c4a0;
+    outline-offset: 3px;
+  }
+  .cl-cap {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 2.2rem 0.85rem 0.65rem;
+    text-align: left;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #f2ece1;
+    background: linear-gradient(to top, rgba(18, 16, 14, 0.72), rgba(18, 16, 14, 0));
+  }
+
+  .cl-text {
+    align-self: start;
+    padding: 0.5rem 0.25rem 0.75rem;
+  }
+  @media (min-width: 768px) {
+    .cl-text {
+      padding: 0 0.25rem;
+    }
+  }
+
+  /* Entrance: photos and text fade in where they are, with a gentle settle. Nothing hides until JS is ready. */
+  .cl-ready .cl-photo {
+    opacity: 0;
+    transition: opacity 1.1s ease-out;
+  }
+  .cl-ready .cl-photo img {
+    transform: scale(1.06);
+  }
+  .cl-ready .cl-fig.is-in .cl-photo {
+    opacity: 1;
+  }
+  .cl-ready .cl-fig.is-in .cl-photo img {
+    transform: scale(1);
+  }
+
+  .cl-ready .cl-text-in {
+    opacity: 0;
+    transition: opacity 1.1s ease-out 0.1s;
+  }
+  .cl-ready .cl-text.is-in .cl-text-in {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cl-ready .cl-photo {
+      opacity: 1;
+      transition: none;
+    }
+    .cl-ready .cl-photo img {
+      transform: none;
+      transition: none;
+    }
+    .cl-ready .cl-text-in {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+
+/* ───────────────────────── Page load sequence ─────────────────────────
+   Nothing animates until fonts are in (html.is-ready, set in main.tsx), so the
+   headline never swaps typeface mid-animation. The hero photo fades in once it
+   has decoded, then the text follows. */
+@layer components {
+  .hero-img {
+    opacity: 0;
+    transform: scale(1.07);
+  }
+  .hero-img.is-loaded {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 1.4s ease-out, transform 3.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-in {
+    opacity: 0;
+  }
+  html.is-ready .hero-in {
+    animation: heroIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 110ms + 250ms);
+  }
+  @keyframes heroIn {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-img,
+    .hero-img.is-loaded {
+      transform: none;
+      transition: opacity 0.4s linear;
+    }
+    html.is-ready .hero-in {
+      animation: none;
+      opacity: 1;
+    }
   }
 }
