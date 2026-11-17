@@ -63,7 +63,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             {property.tagline}
           </p>
           <button
-            onClick={() => onNavigate('stay')}
+            onClick={() => onNavigate('stay-tour')}
             className="hero-in no-tap-highlight group mt-8 inline-flex min-h-[48px] items-center gap-3 rounded-full bg-champagne-500 px-7 py-3.5 text-xs font-medium uppercase tracking-widest-2 text-ink-900 shadow-lg shadow-black/30 transition-all duration-300 hover:bg-champagne-400 active:scale-95"
             style={{ ['--i' as string]: 2 }}
           >
