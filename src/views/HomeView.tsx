@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronRight, ArrowRight, Phone } from 'lucide-react';
 import { property } from '@/data/content';
 import { Reveal } from '@/components/Reveal';
+import { Photo } from '@/components/Photo';
+import { photoSrc, photoSrcSet } from '@/lib/photo';
 
 interface HomeViewProps {
   onNavigate: (view: string) => void;
@@ -30,10 +32,12 @@ export function HomeView({ onNavigate }: HomeViewProps) {
       {/* Hero */}
       <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-ink-900">
         <picture className="absolute inset-0 block">
-          <source media="(min-width: 768px)" srcSet={property.heroImageDesktop} />
+          <source media="(min-width: 768px)" srcSet={photoSrcSet(property.heroImageDesktop)} sizes="100vw" />
           <img
             ref={heroRef}
-            src={property.heroImage}
+            src={photoSrc(property.heroImage, 1200)}
+            srcSet={photoSrcSet(property.heroImage)}
+            sizes="100vw"
             alt="The Finca Libia facade, framed by stone seats and lawn"
             decoding="async"
             onLoad={() => setHeroLoaded(true)}
@@ -95,10 +99,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
           <Reveal>
             <div className="py-14">
               <div className="flex items-center gap-5">
-                <img
+                <Photo
                   src={property.host.image}
+                  sizes="80px"
                   alt={property.host.name}
-                  loading="lazy"
                   className="h-20 w-20 shrink-0 rounded-full object-cover"
                 />
                 <div className="min-w-0 flex-1">
@@ -135,10 +139,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                 className="no-tap-highlight group mt-8 block overflow-hidden"
                 aria-label="Watch the instruction videos on YouTube"
               >
-                <img
+                <Photo
                   src="/photos/youtube_guides.jpg"
+                  sizes="(min-width: 768px) 672px, 100vw"
                   alt="A phone showing the Finca Libia instruction videos"
-                  loading="lazy"
                   className="h-auto w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
               </a>

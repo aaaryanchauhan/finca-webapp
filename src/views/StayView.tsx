@@ -5,6 +5,7 @@ import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
 import { EstateCollage } from '@/components/EstateCollage';
 import type { Amenity, Bedroom } from '@/types';
+import { Photo } from '@/components/Photo';
 
 interface StayViewProps {
   onBack: () => void;
@@ -49,7 +50,7 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
     return (
       <div className="min-h-screen bg-ink-900 text-ivory-100">
         <div className="relative h-[55vh] w-full overflow-hidden bg-ink-950">
-          <img
+          <Photo
             src={currentPhoto}
             alt={selectedBedroom.name}
             className="h-full w-full object-cover transition-all duration-500"
@@ -93,7 +94,7 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
                 activePhotoIdx === i ? 'border-champagne-400 scale-105 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'
               }`}
             >
-              <img src={img} alt="" className="h-full w-full object-cover" />
+              <Photo src={img} sizes="96px" className="h-full w-full object-cover" />
             </button>
           ))}
         </div>
@@ -159,7 +160,7 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
     return (
       <div className="min-h-screen bg-ink-900">
         <div className="relative h-[50vh] w-full overflow-hidden bg-ink-950">
-          <img
+          <Photo
             src={currentPhoto}
             alt={selectedAmenity.name}
             className="h-full w-full object-cover transition-all duration-500"
@@ -211,7 +212,7 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
                       activePhotoIdx === i ? 'border-champagne-400 scale-105 shadow-lg' : 'border-ink-700/80 opacity-60 hover:opacity-100'
                     }`}
                   >
-                    <img src={img} alt="" className="h-full w-full object-cover" />
+                    <Photo src={img} sizes="96px" className="h-full w-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -278,7 +279,7 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
     <div className="min-h-screen bg-ink-900 pb-44">
       {/* Hero */}
       <section className="relative h-[55vh] w-full overflow-hidden">
-        <img
+        <Photo
           src={propertyStory[0].image}
           alt="Finca Libia Estate"
           className="h-full w-full object-cover"
@@ -307,22 +308,25 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
             >
               <div className="grid aspect-[16/10] grid-cols-3 grid-rows-2 gap-2 overflow-hidden">
                 <div className="col-span-2 row-span-2 overflow-hidden">
-                  <img
+                  <Photo
                     src="/photos/exterior/exterior_10.jpeg"
+                    sizes="(min-width: 768px) 480px, 66vw"
                     alt=""
                     className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                   />
                 </div>
                 <div className="overflow-hidden">
-                  <img
+                  <Photo
                     src="/photos/pool/pool_01.jpeg"
+                    sizes="(min-width: 768px) 240px, 33vw"
                     alt=""
                     className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                   />
                 </div>
                 <div className="overflow-hidden">
-                  <img
+                  <Photo
                     src="/photos/dining_area/dining_area_01.jpeg"
+                    sizes="(min-width: 768px) 240px, 33vw"
                     alt=""
                     className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-105"
                   />
@@ -364,8 +368,9 @@ export function StayView({ onBack, autoOpenTour = false, onTourOpened }: StayVie
                   className="no-tap-highlight group flex flex-col justify-between text-left h-full w-full overflow-hidden rounded-2xl border border-ink-700/80 bg-ink-800/40 backdrop-blur-md transition-all duration-300 hover:border-champagne-400/60 hover:bg-ink-800/70 hover:shadow-xl flex-1"
                 >
                   <div className="relative aspect-[16/10] w-full overflow-hidden shrink-0">
-                    <img
+                    <Photo
                       src={bedroom.photos[0]}
+                    sizes="(min-width: 768px) 340px, 50vw"
                       alt={bedroom.name}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />

@@ -4,6 +4,7 @@ import { checkoutSteps, property } from '@/data/content';
 import { supabase } from '@/lib/supabase';
 import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
+import { Photo } from '@/components/Photo';
 
 interface CheckoutViewProps {
   onBack: () => void;
@@ -58,7 +59,7 @@ export function CheckoutView({ onBack, onNavigate }: CheckoutViewProps) {
     <div className="min-h-screen bg-ink-900 pb-44 text-ivory-100">
       {/* Hero Header */}
       <section className="relative h-[48vh] w-full overflow-hidden">
-        <img
+        <Photo
           src="/photos/exterior/exterior_18.jpeg"
           alt="Finca Libia Checkout"
           className="h-full w-full object-cover"

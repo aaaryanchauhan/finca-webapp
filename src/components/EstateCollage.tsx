@@ -3,6 +3,7 @@ import type { CSSProperties } from 'react';
 import { ArrowRight, X } from 'lucide-react';
 import { collageChapters } from '@/data/content';
 import { BackButton } from '@/components/BackButton';
+import { photoSrc, photoSrcSet } from '@/lib/photo';
 import type { CollageItem, CollagePhoto } from '@/types';
 
 interface EstateCollageProps {
@@ -20,6 +21,13 @@ function itemVars(item: CollageItem): ItemVars {
     '--span': item.m.span,
     ...(item.kind === 'photo' && item.m.ar ? { '--ar': item.m.ar } : {}),
   };
+}
+
+/** Tell the browser how wide each tile is drawn so it fetches the smaller WebP when it can. */
+function tileSizes(item: CollagePhoto): string {
+  const cols = Number(/span (\d+)/.exec(item.d.col)?.[1] ?? 6);
+  const desktopPx = Math.round((cols / 12) * 1152);
+  return `(max-width: 767px) ${item.m.span === 2 ? '100vw' : '50vw'}, ${desktopPx}px`;
 }
 
 const textSize = {
@@ -132,7 +140,7 @@ export function EstateCollage({ onClose, startChapterId }: EstateCollageProps) {
 
       <div ref={scrollerRef} className="cl-scroller h-full overflow-y-auto overflow-x-hidden">
         <div className="pt-24 sm:pt-28">
-          {collageChapters.map((chapter) => (
+          {collageChapters.map((chapter, chapterIdx) => (
             <section
               key={chapter.id}
               data-chapter
@@ -176,7 +184,15 @@ export function EstateCollage({ onClose, startChapterId }: EstateCollageProps) {
                         onClick={() => setLightbox(item)}
                         aria-label={`View larger: ${item.alt}`}
                       >
-                        <img src={item.src} alt={item.alt} loading="lazy" decoding="async" draggable={false} />
+                        <img
+                          src={photoSrc(item.src, 640)}
+                          srcSet={photoSrcSet(item.src)}
+                          sizes={tileSizes(item)}
+                          alt={item.alt}
+                          loading={chapterIdx === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
+                          draggable={false}
+                        />
                         {item.caption && (
                           <figcaption className="cl-cap">{item.caption}</figcaption>
                         )}
@@ -218,7 +234,7 @@ export function EstateCollage({ onClose, startChapterId }: EstateCollageProps) {
             <X className="h-5 w-5" strokeWidth={1.5} />
           </button>
           <img
-            src={lightbox.src}
+            src={photoSrc(lightbox.src, 1200)}
             alt={lightbox.alt}
             className="max-h-[78vh] w-auto max-w-full object-contain"
             onClick={(e) => e.stopPropagation()}

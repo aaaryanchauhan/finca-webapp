@@ -16,6 +16,7 @@ import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
 import { NavigationModal, type NavigationTarget } from '@/components/NavigationModal';
 import type { Recommendation } from '@/types';
+import { Photo } from '@/components/Photo';
 
 interface ExploreViewProps {
   onBack: () => void;
@@ -79,7 +80,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
           onRequestDriver={handleRequestDriver}
         />
         <div className="relative h-[45vh] sm:h-[55vh] w-full overflow-hidden">
-          <img
+          <Photo
             src={selectedRec.image}
             alt={selectedRec.name}
             className="h-full w-full object-cover"
@@ -435,7 +436,7 @@ export function ExploreView({ onBack, onNavigate }: ExploreViewProps) {
       />
       {/* Hero */}
       <section className="relative h-[50vh] sm:h-[60vh] md:h-[65vh] w-full overflow-hidden">
-        <img
+        <Photo
           src="/photos/discover_medellin.jpg"
           alt="Medellín & Antioquia Guide"
           className="h-full w-full object-cover"

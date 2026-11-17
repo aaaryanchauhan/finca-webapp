@@ -1,3 +1,5 @@
+import { Photo } from '@/components/Photo';
+
 interface FullScreenImageProps {
   src: string;
   alt?: string;
@@ -17,7 +19,7 @@ export function FullScreenImage({
 }: FullScreenImageProps) {
   return (
     <div className={`relative overflow-hidden ${className}`}>
-      <img
+      <Photo
         src={src}
         alt={alt}
         className={`h-full w-full object-cover ${scale ? 'animate-scale-in' : ''}`}

@@ -2,6 +2,7 @@ import { ArrowRight, Plane, Clock, Home, Wifi, Video, Dog, MessageSquare, Phone,
 import { property } from '@/data/content';
 import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
+import { Photo } from '@/components/Photo';
 
 interface PreArrivalViewProps {
   onBack: () => void;
@@ -13,7 +14,7 @@ export function PreArrivalView({ onBack, onNavigate }: PreArrivalViewProps) {
     <div className="min-h-screen bg-ink-900 pb-44 text-ivory-100">
       {/* Hero */}
       <section className="relative h-[48vh] w-full overflow-hidden">
-        <img
+        <Photo
           src={property.heroImageAlt}
           alt="Finca Libia"
           className="h-full w-full object-cover"

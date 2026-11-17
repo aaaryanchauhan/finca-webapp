@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabase';
 import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
 import type { GuestbookEntry } from '@/types';
+import { Photo } from '@/components/Photo';
 
 interface MemoriesViewProps {
   onBack: () => void;
@@ -99,7 +100,7 @@ export function MemoriesView({ onBack }: MemoriesViewProps) {
           {seedMemories.map((memory, i) => (
             <Reveal key={memory.id} delay={i * 80}>
               <div className="overflow-hidden rounded-2xl border border-ink-700/80 shadow-xl">
-                <img
+                <Photo
                   src={memory.image}
                   alt={memory.author}
                   className="w-full object-cover"

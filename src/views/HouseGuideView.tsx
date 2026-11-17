@@ -2,6 +2,7 @@ import { Wifi, Phone, ShieldAlert, Car, ShoppingBag, Flame, Home, Info, Heart, A
 import { property } from '@/data/content';
 import { Reveal } from '@/components/Reveal';
 import { BackButton } from '@/components/BackButton';
+import { Photo } from '@/components/Photo';
 
 interface HouseGuideViewProps {
   onBack: () => void;
@@ -13,7 +14,7 @@ export function HouseGuideView({ onBack, onNavigate }: HouseGuideViewProps) {
     <div className="min-h-screen bg-ink-900 pb-44 text-ivory-100">
       {/* Hero Header */}
       <section className="relative h-[45vh] w-full overflow-hidden">
-        <img
+        <Photo
           src={property.heroImage}
           alt="Finca Libia House Guide"
           className="h-full w-full object-cover"
@@ -55,7 +56,7 @@ export function HouseGuideView({ onBack, onNavigate }: HouseGuideViewProps) {
             </p>
 
             <div className="relative overflow-hidden rounded-xl border border-ink-700 group cursor-pointer">
-              <img
+              <Photo
                 src="/photos/youtube_guides.jpg"
                 alt="Finca Libia YouTube Instruction Videos"
                 className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
